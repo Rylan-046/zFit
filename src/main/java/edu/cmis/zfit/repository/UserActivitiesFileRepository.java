@@ -1,7 +1,7 @@
 package edu.cmis.zfit.repository;
 
 import edu.cmis.zfit.model.Activity;
-import edu.cmis.zfit.model.DateRange;
+import edu.cmis.zfit.model.ActivityType;
 import edu.cmis.zfit.model.UserActivities;
 
 import java.io.IOException;
@@ -20,8 +20,6 @@ public class UserActivitiesFileRepository extends AbstractFileRepository impleme
     @Override
     public void save(UserActivities newUserActivities) throws IOException {
         UserActivities userActivities;
-
-        System.out.println("new activities: " + newUserActivities.getActivityList().size());
 
         if (Files.exists(super.getFilePath(newUserActivities.getUserProfile().getId(), FILE_SUFFIX))) {
             userActivities = fetch(newUserActivities.getUserProfile().getId());
@@ -58,16 +56,18 @@ public class UserActivitiesFileRepository extends AbstractFileRepository impleme
     }
 
     @Override
-    public UserActivities fetch(String userId, DateRange dateRange) throws IOException {
+    public UserActivities fetch(String userId, ActivityType activityType) throws IOException {
         Path filePath = (super.getFilePath(userId, FILE_SUFFIX));
 
-        return getJsonMapper().readValue(filePath.toFile(), UserActivities.class);
-    }
+        UserActivities userActivities = getJsonMapper().readValue(filePath.toFile(), UserActivities.class);
+        UserActivities filteredUserActivities = new UserActivities(userActivities.getUserProfile());
 
-    @Override
-    public UserActivities fetch(String userId, DateRange dateRange, Activity activityType) throws IOException {
-        Path filePath = (super.getFilePath(userId, FILE_SUFFIX));
+        for(Activity activity : userActivities.getActivityList()) {
+            if(activity.getType() == activityType) {
+                filteredUserActivities.add(activity);
+            }
+        }
 
-        return getJsonMapper().readValue(filePath.toFile(), UserActivities.class);
+        return filteredUserActivities;
     }
 }

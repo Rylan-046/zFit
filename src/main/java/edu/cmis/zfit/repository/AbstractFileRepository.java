@@ -11,9 +11,7 @@ public class AbstractFileRepository {
 
     protected AbstractFileRepository(Path basePath) {
         this.basePath = basePath;
-//        jsonMapper.registerModule(new JavaTimeModule());
         jsonMapper.findAndRegisterModules();
-//        jsonMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     }
 
     protected Path getFilePath(String userId, String fileNameSuffix) {

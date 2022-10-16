@@ -186,6 +186,18 @@ public class UserActivitiesRepositoryTest {
         );
     }
 
+    @Test
+    public void fetchTest() throws IOException {
+        UserActivities actualUserActivities = userActivitiesFileRepository.fetch(userActivities.getUserProfile().getId());
+        Assertions.assertEquals(userActivities.toString(), actualUserActivities.toString());
+    }
+
+    @Test
+    public void fetchFilterByTypeTest() throws IOException {
+        UserActivities actualUserActivities = userActivitiesFileRepository.fetch(userActivities.getUserProfile().getId(), BurnActivityType.RUNNING);
+        Assertions.assertEquals(1, actualUserActivities.getActivityList().size());
+    }
+
     @AfterEach
     public void tearDown() throws IOException {
         userActivitiesFileRepository.delete("billy@gmail.com");

@@ -1,10 +1,8 @@
 package edu.cmis.zfit.model;
 
-public enum BurnActivityType {
+public enum BurnActivityType implements ActivityType {
     WALKING,
     RUNNING,
     WEIGHT_LIFTING,
     RESTING;
-
-
 }

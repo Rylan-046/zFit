@@ -14,6 +14,7 @@ repositories {
 
 ext {
     junitVersion = '5.8.2'
+    jacksonVersion = '2.14.0-rc1'
 }
 
 sourceCompatibility = '17'
@@ -34,9 +35,13 @@ javafx {
 }
 
 dependencies {
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+
+    implementation("com.fasterxml.jackson.core:jackson-core:${jacksonVersion}")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}")
+    implementation("com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}")
 }
 
 test {

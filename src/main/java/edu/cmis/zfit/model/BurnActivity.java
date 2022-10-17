@@ -1,5 +1,9 @@
 package edu.cmis.zfit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.Instant;
+
 public class BurnActivity implements Activity {
     private String id;
     private int calories;
@@ -103,6 +107,17 @@ public class BurnActivity implements Activity {
     @Override
     public void setHeightInInches(int heightInInches) {
         this.heightInInches = heightInInches;
+    }
+
+    @Override
+    @JsonIgnore
+    public Instant getDate() {
+        Instant date = null;
+
+        if(duration != null) {
+            date = getDuration().getBegin();
+        }
+        return date;
     }
 
     @Override

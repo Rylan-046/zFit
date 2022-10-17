@@ -82,6 +82,7 @@ public class UserActivitiesRepositoryTest {
                         95,
                         628,
                         38,
+                        Instant.now(),
                         ConsumptionActivityType.EATING
                 )
         );
@@ -129,6 +130,7 @@ public class UserActivitiesRepositoryTest {
                         100,
                         120,
                         65,
+                        Instant.now().plus(2, ChronoUnit.HOURS),
                         ConsumptionActivityType.EATING
                 )
         );

@@ -15,4 +15,4 @@ This software is intended to be used during the day after eating and fitness act
 It tracks metrics based on food consumption and fitness activities to determine overall health based on calories consumed and burnt.
 
 • Why would anyone want to use the software over existing processes?
-The software will provide comprehensive guidance to improve your fitness. 
+The software will provide comprehensive guidance to improve your fitness.

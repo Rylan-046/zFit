@@ -1,5 +1,7 @@
 package edu.cmis.zfit.model;
 
+import java.time.Instant;
+
 public class ConsumptionActivity implements Activity {
     private String id;
     private int calories;
@@ -8,6 +10,7 @@ public class ConsumptionActivity implements Activity {
     private int oxygenSaturationLevelPercentage;
     private float weightInLbs;
     private int heightInInches;
+    private Instant date;
     private ConsumptionActivityType type;
 
     public ConsumptionActivity() {
@@ -21,6 +24,7 @@ public class ConsumptionActivity implements Activity {
             int oxygenSaturationLevelPercentage,
             float weightInLbs,
             int heightInInches,
+            Instant date,
             ConsumptionActivityType type) {
         this.id = id;
         this.calories = calories;
@@ -29,6 +33,7 @@ public class ConsumptionActivity implements Activity {
         this.oxygenSaturationLevelPercentage = oxygenSaturationLevelPercentage;
         this.weightInLbs = weightInLbs;
         this.heightInInches = heightInInches;
+        this.date = date;
         this.type = type;
     }
 
@@ -103,13 +108,21 @@ public class ConsumptionActivity implements Activity {
     }
 
     @Override
+    public Instant getDate() {
+        return date;
+    }
+    public void setDate(Instant date) {
+        this.date = date;
+    }
+
+    @Override
     public ConsumptionActivityType getType() {
         return type;
     }
 
     @Override
     public String toString() {
-        return "BurnActivity{" +
+        return "ConsumptionActivity{" +
                 "id='" + id + '\'' +
                 ", calories=" + calories +
                 ", heartRateInBpm=" + heartRateInBpm +
@@ -117,6 +130,7 @@ public class ConsumptionActivity implements Activity {
                 ", oxygenSaturationLevelPercentage=" + oxygenSaturationLevelPercentage +
                 ", weightInLbs=" + weightInLbs +
                 ", heightInInches=" + heightInInches +
+                ", date=" + date +
                 ", type=" + type +
                 '}';
     }

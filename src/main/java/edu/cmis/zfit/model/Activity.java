@@ -3,6 +3,8 @@ package edu.cmis.zfit.model;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.time.Instant;
+
 @JsonTypeInfo( use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = BurnActivity.class, name = "burnActivity"),
@@ -23,5 +25,6 @@ public interface Activity {
     void setWeightInLbs(float weightInLbs);
     int getHeightInInches();
     void setHeightInInches(int heightInInches);
+    Instant getDate();
     ActivityType getType();
 }

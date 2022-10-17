@@ -13,7 +13,7 @@ import java.nio.file.StandardOpenOption;
 public class UserActivitiesFileRepository extends AbstractFileRepository implements UserActivitiesRepository {
     private static final String FILE_SUFFIX = "activities.json";
 
-    protected UserActivitiesFileRepository(Path basePath) {
+    public UserActivitiesFileRepository(Path basePath) {
         super(basePath);
     }
 

@@ -31,7 +31,7 @@ public class ActivityQuickSorter implements ActivitySorter {
         int smallerIndex = (low - 1);
         for (int largerIndex = low; largerIndex < high; largerIndex++) {
             // Check if date of activity at largerIndex is less than current activity partition
-            if (activityList.get(largerIndex).getDate().compareTo(activityPartition.getDate()) <= 0) {
+            if (activityList.get(largerIndex).date().compareTo(activityPartition.date()) <= 0) {
                 smallerIndex++;
                 swap(activityList, largerIndex, smallerIndex, largerIndex);
             }

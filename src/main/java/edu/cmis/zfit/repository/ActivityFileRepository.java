@@ -63,7 +63,7 @@ public class ActivityFileRepository extends AbstractFileRepository implements Ac
         List<Activity> filteredActivityList = new ArrayList<>();
 
         for(Activity activity : activityList) {
-            if(activity.getActivityType() == activityType) {
+            if(activity.activityType() == activityType) {
                 filteredActivityList.add(activity);
             }
         }

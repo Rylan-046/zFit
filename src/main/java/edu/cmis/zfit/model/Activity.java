@@ -11,20 +11,13 @@ import java.time.Instant;
         @JsonSubTypes.Type(value = ConsumptionActivity.class, name = "consumptionActivity")
 })
 public interface Activity {
-    String getId();
-    void setId(String id);
-    int getCalories();
-    void setCalories(int calories);
-    int getHeartRateInBpm();
-    void setHeartRateInBpm(int heartRateInBpm);
-    int getHeartRateVariability();
-    void setHeartRateVariability(int heartRateVariability);
-    int getOxygenSaturationLevelPercentage();
-    void setOxygenSaturationLevelPercentage(int oxygenSaturationLevelPercentage);
-    float getWeightInLbs();
-    void setWeightInLbs(float weightInLbs);
-    int getHeightInInches();
-    void setHeightInInches(int heightInInches);
-    Instant getDate();
-    ActivityType getActivityType();
+    String id();
+    int calories();
+    int heartRateInBpm();
+    int heartRateVariability();
+    int oxygenSaturationLevelPercentage();
+    float weightInLbs();
+    int heightInInches();
+    Instant date();
+    ActivityType activityType();
 }

@@ -106,7 +106,7 @@ public class ActivityQuickSorterTest {
         System.out.println("sorted='" + sorted + "'");
 
         for (Activity activity : activityList) {
-            System.out.println("id='" + activity.getId() + "', date='" + formatter.format(Date.from(activity.getDate())) + "'");
+            System.out.println("id='" + activity.id() + "', date='" + formatter.format(Date.from(activity.date())) + "'");
         }
     }
 }

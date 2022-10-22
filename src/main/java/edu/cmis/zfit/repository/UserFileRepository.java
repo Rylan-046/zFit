@@ -17,12 +17,12 @@ public class UserFileRepository extends AbstractFileRepository implements UserRe
 
     @Override
     public void save(UserProfile userProfile) throws IOException {
-        Path filePath = getFilePath(userProfile.getId(), FILE_SUFFIX);
+        Path filePath = getFilePath(userProfile.id(), FILE_SUFFIX);
         String json = getJsonMapper().writerWithDefaultPrettyPrinter().writeValueAsString(userProfile);
 
         System.out.println("Saving: " + json + " to " + filePath);
 
-        delete(userProfile.getId());
+        delete(userProfile.id());
 
         Files.writeString(filePath, json,
                 StandardCharsets.UTF_8, StandardOpenOption.CREATE);

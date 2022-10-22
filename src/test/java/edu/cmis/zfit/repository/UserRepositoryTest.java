@@ -47,7 +47,7 @@ public class UserRepositoryTest {
 
         userFileRepository.save(userProfileExpected);
 
-        UserProfile userProfileActual = userFileRepository.fetchById(userProfileExpected.getId());
+        UserProfile userProfileActual = userFileRepository.fetchById(userProfileExpected.id());
 
         Assertions.assertEquals(userProfileExpected, userProfileActual);
     }
@@ -57,13 +57,19 @@ public class UserRepositoryTest {
 
         System.out.println("Maiden name changed to surname: " + userProfile);
 
-        userProfile.setLastName("Monroe");
+        UserProfile expectedUserProfile = new UserProfile (
+                userProfile.id(),
+                userProfile.birthDate(),
+                userProfile.gender(),
+                userProfile.firstName(),
+                "Monroe"
+        );
 
-        userFileRepository.save(userProfile);
+        userFileRepository.save(expectedUserProfile);
 
         UserProfile userProfileActual = userFileRepository.fetchById("mandy@gmail.com");
 
-        Assertions.assertEquals(userProfile, userProfileActual);
+        Assertions.assertEquals(expectedUserProfile, userProfileActual);
     }
 
     @Test

@@ -1,10 +1,8 @@
 package edu.cmis.zfit.service;
 
 import edu.cmis.zfit.model.Activity;
-import edu.cmis.zfit.model.UserActivities;
-import edu.cmis.zfit.model.UserProfile;
-import edu.cmis.zfit.repository.UserActivitiesFileRepository;
-import edu.cmis.zfit.repository.UserActivitiesRepository;
+import edu.cmis.zfit.repository.ActivityFileRepository;
+import edu.cmis.zfit.repository.ActivityRepository;
 import edu.cmis.zfit.repository.UserFileRepository;
 import edu.cmis.zfit.repository.UserRepository;
 import edu.cmis.zfit.util.ActivityQuickSorter;
@@ -18,22 +16,21 @@ import java.util.List;
 
 public class ActivityTrackerServiceImpl implements ActivityTrackerService {
     private static final String FILE_SUFFIX = "profile.json";
-    private final UserActivitiesRepository userActivitiesRepository = new UserActivitiesFileRepository(getBasePath());
+    private final ActivityRepository activityRepository = new ActivityFileRepository(getBasePath());
     private final UserRepository userRepository = new UserFileRepository(getBasePath());
     private final ActivitySorter activitySorter = new ActivityQuickSorter();
 
     @Override
-    public UserActivities getUserActivities(String userId, boolean sortByDate) throws ServiceException {
-        UserActivities userActivities;
+    public List<Activity> getUserActivities(String userId, boolean sortByDate) throws ServiceException {
+        List<Activity> activityList;
 
         try {
-            UserActivities tmpUserActivities = userActivitiesRepository.fetch(userId);
+            List<Activity> tmpActivityList = activityRepository.fetch(userId);
+
             if(sortByDate) {
-                List<Activity> sortedActivityList = activitySorter.sortByDate((ArrayList<Activity>) tmpUserActivities.getActivityList());
-                userActivities = new UserActivities(tmpUserActivities.getUserProfile());
-                userActivities.add(sortedActivityList);
+                activityList = activitySorter.sortByDate((ArrayList<Activity>) tmpActivityList);
             } else {
-                userActivities = tmpUserActivities;
+                activityList = tmpActivityList;
             }
 
         } catch (IOException e) {
@@ -42,17 +39,13 @@ public class ActivityTrackerServiceImpl implements ActivityTrackerService {
             throw new ServiceException(errMsg, e);
         }
 
-        return userActivities;
+        return activityList;
     }
 
     @Override
-    public void addUserActivities(String userId, List<Activity> activities) throws ServiceException {
+    public void addUserActivities(String userId, List<Activity> activityList) throws ServiceException {
         try {
-            UserProfile userProfile = userRepository.fetchById(userId);
-            UserActivities userActivities = new UserActivities(userProfile);
-            userActivities.add(activities);
-
-            userActivitiesRepository.save(userActivities);
+            activityRepository.save(userId, activityList );
         } catch (IOException e) {
             String errMsg = "Saving activities for user='" + userId + "' failure!";
             System.out.println(errMsg);

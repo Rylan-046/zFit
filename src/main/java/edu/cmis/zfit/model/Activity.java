@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.time.Instant;
 
-@JsonTypeInfo( use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY, property = "type") @JsonSubTypes({
         @JsonSubTypes.Type(value = BurnActivity.class, name = "burnActivity"),
         @JsonSubTypes.Type(value = ConsumptionActivity.class, name = "consumptionActivity")
 })
@@ -26,5 +26,5 @@ public interface Activity {
     int getHeightInInches();
     void setHeightInInches(int heightInInches);
     Instant getDate();
-    ActivityType getType();
+    ActivityType getActivityType();
 }

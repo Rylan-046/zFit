@@ -1,5 +1,7 @@
 package edu.cmis.zfit.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.Instant;
 
 public class ConsumptionActivity implements Activity {
@@ -11,7 +13,7 @@ public class ConsumptionActivity implements Activity {
     private float weightInLbs;
     private int heightInInches;
     private Instant date;
-    private ConsumptionActivityType type;
+    private ConsumptionActivityType activityType;
 
     public ConsumptionActivity() {
     }
@@ -25,7 +27,7 @@ public class ConsumptionActivity implements Activity {
             float weightInLbs,
             int heightInInches,
             Instant date,
-            ConsumptionActivityType type) {
+            ConsumptionActivityType activityType) {
         this.id = id;
         this.calories = calories;
         this.heartRateInBpm = heartRateInBpm;
@@ -34,8 +36,11 @@ public class ConsumptionActivity implements Activity {
         this.weightInLbs = weightInLbs;
         this.heightInInches = heightInInches;
         this.date = date;
-        this.type = type;
+        this.activityType = activityType;
     }
+
+    @JsonProperty("type")
+    private final String type = "consumptionActivity";
 
     @Override
     public String getId() {
@@ -116,8 +121,8 @@ public class ConsumptionActivity implements Activity {
     }
 
     @Override
-    public ConsumptionActivityType getType() {
-        return type;
+    public ConsumptionActivityType getActivityType() {
+        return activityType;
     }
 
     @Override
@@ -131,7 +136,7 @@ public class ConsumptionActivity implements Activity {
                 ", weightInLbs=" + weightInLbs +
                 ", heightInInches=" + heightInInches +
                 ", date=" + date +
-                ", type=" + type +
+                ", type=" + activityType +
                 '}';
     }
 }

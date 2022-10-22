@@ -1,43 +1,34 @@
 package edu.cmis.zfit.repository;
 
 import edu.cmis.zfit.model.*;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-public class UserActivitiesRepositoryTest {
-    private UserActivitiesFileRepository userActivitiesFileRepository;
-    private UserProfile userProfile;
-    private UserActivities userActivities;
+public class ActivityRepositoryTest {
+    private ActivityRepository ActivityFileRepository;
+    private String userId;
+    private final List<Activity> activityList = new ArrayList<>();
 
     @BeforeEach
     public void setup() throws IOException {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        userActivitiesFileRepository = new UserActivitiesFileRepository(getBasePath());
+        ActivityFileRepository = new ActivityFileRepository(getBasePath());
 
-        userProfile = new UserProfile(
-                "billy@gmail.com",
-                LocalDate.parse("1998-02-01"),
-                Gender.FEMALE,
-                "Billy",
-                "Jenkins"
-        );
+        userId = "billy@gmail.com";
 
-        userActivities = new UserActivities(userProfile);
         Instant currentTime = Instant.now();
 
-        userActivities.add(
+        activityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
                         250,
@@ -55,7 +46,7 @@ public class UserActivitiesRepositoryTest {
                 )
         );
 
-        userActivities.add(
+        activityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
                         5,
@@ -73,7 +64,7 @@ public class UserActivitiesRepositoryTest {
                 )
         );
 
-        userActivities.add(
+        activityList.add(
                 new ConsumptionActivity(
                         UUID.randomUUID().toString(),
                         1250,
@@ -87,23 +78,17 @@ public class UserActivitiesRepositoryTest {
                 )
         );
 
-        userActivitiesFileRepository.save(userActivities);
+        ActivityFileRepository.save(userId, activityList);
         System.out.println("**** END SETUP ****");
     }
 
     @Test
     public void createTest() throws IOException {
-        UserProfile userProfile = new UserProfile(
-                "lex@gmail.com",
-                LocalDate.parse("2000-01-01"),
-                Gender.MALE,
-                "Lex",
-                "Smith"
-        );
+        userId = "lex@gmail.com";
 
         Instant currentTime = Instant.now();
-        UserActivities userActivitiesExpected = new UserActivities(userProfile);
-        userActivitiesExpected.add(
+        List<Activity> expectedActivityList = new ArrayList<>();
+        expectedActivityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
                         225,
@@ -121,7 +106,7 @@ public class UserActivitiesRepositoryTest {
                 )
         );
 
-        userActivitiesExpected.add(
+        expectedActivityList.add(
                 new ConsumptionActivity(
                         UUID.randomUUID().toString(),
                         1100,
@@ -135,20 +120,20 @@ public class UserActivitiesRepositoryTest {
                 )
         );
 
-        userActivitiesFileRepository.save(userActivitiesExpected);
+        ActivityFileRepository.save(userId, expectedActivityList);
 
-        UserActivities userActivitiesActual = userActivitiesFileRepository.fetch(userActivitiesExpected.getUserProfile().getId());
+        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId);
 
-        Assertions.assertEquals(userActivitiesExpected.toString(), userActivitiesActual.toString());
+        Assertions.assertEquals(expectedActivityList.toString(), actualActivityList.toString());
     }
 
     @Test
     public void updateTest() throws IOException {
 
         Instant currentTime = Instant.now();
-        UserActivities userActivitiesNew = new UserActivities(userProfile);
+        List<Activity> newActivityList = new ArrayList<>();
 
-        userActivitiesNew.add(
+        newActivityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
                         225,
@@ -166,45 +151,45 @@ public class UserActivitiesRepositoryTest {
                 )
         );
 
-        UserActivities userActivitiesExpected = new UserActivities(userProfile);
-        userActivitiesExpected.add(userActivities.getActivityList());
-        userActivitiesExpected.add(userActivitiesNew.getActivityList());
+        List<Activity> expectedActivityList = new ArrayList<>();
+        expectedActivityList.addAll(activityList);
+        expectedActivityList.addAll(newActivityList);
 
-        userActivitiesFileRepository.save(userActivitiesNew);
+        ActivityFileRepository.save(userId, newActivityList);
 
-        UserActivities userActivitiesActual = userActivitiesFileRepository.fetch("billy@gmail.com");
+        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId);
 
-        Assertions.assertEquals(userActivitiesExpected.toString(), userActivitiesActual.toString());
+        Assertions.assertEquals(expectedActivityList.toString(), actualActivityList.toString());
     }
 
     @Test
     public void deleteTest() throws IOException {
-        userActivitiesFileRepository.delete("mandy@gmail.com");
+        ActivityFileRepository.delete("mandy@gmail.com");
 
         Assertions.assertThrows(
                 IOException.class,
-                () -> userActivitiesFileRepository.fetch("mandy@gmail.com"),
+                () -> ActivityFileRepository.fetch("mandy@gmail.com"),
                 "File doesn't exist."
         );
     }
 
     @Test
     public void fetchTest() throws IOException {
-        UserActivities actualUserActivities = userActivitiesFileRepository.fetch(userActivities.getUserProfile().getId());
-        Assertions.assertEquals(userActivities.toString(), actualUserActivities.toString());
+        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId);
+        Assertions.assertEquals(activityList.toString(), actualActivityList.toString());
     }
 
     @Test
     public void fetchFilterByTypeTest() throws IOException {
-        UserActivities actualUserActivities = userActivitiesFileRepository.fetch(userActivities.getUserProfile().getId(), BurnActivityType.RUNNING);
-        Assertions.assertEquals(1, actualUserActivities.getActivityList().size());
+        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId, BurnActivityType.RUNNING);
+        Assertions.assertEquals(1, actualActivityList.size());
     }
 
     @AfterEach
     public void tearDown() throws IOException {
-        userActivitiesFileRepository.delete("billy@gmail.com");
-        userActivitiesFileRepository.delete("mandy@gmail.com");
-        userActivitiesFileRepository.delete("lex@gmail.com");
+        ActivityFileRepository.delete("billy@gmail.com");
+        ActivityFileRepository.delete("mandy@gmail.com");
+        ActivityFileRepository.delete("lex@gmail.com");
     }
 
     private Path getBasePath() {

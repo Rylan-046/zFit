@@ -1,6 +1,7 @@
 package edu.cmis.zfit.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Instant;
 
@@ -12,7 +13,7 @@ public class BurnActivity implements Activity {
     private int oxygenSaturationLevelPercentage;
     private float weightInLbs;
     private int heightInInches;
-    private BurnActivityType type;
+    private BurnActivityType activityType;
     private int steps;
     private DateRange duration;
 
@@ -27,7 +28,7 @@ public class BurnActivity implements Activity {
             int oxygenSaturationLevelPercentage,
             float weightInLbs,
             int heightInInches,
-            BurnActivityType type,
+            BurnActivityType activityType,
             int steps,
             DateRange duration) {
         this.id = id;
@@ -37,10 +38,13 @@ public class BurnActivity implements Activity {
         this.oxygenSaturationLevelPercentage = oxygenSaturationLevelPercentage;
         this.weightInLbs = weightInLbs;
         this.heightInInches = heightInInches;
-        this.type = type;
+        this.activityType = activityType;
         this.steps = steps;
         this.duration = duration;
     }
+
+    @JsonProperty("type")
+    private final String type = "burnActivity";
 
     @Override
     public String getId() {
@@ -121,8 +125,8 @@ public class BurnActivity implements Activity {
     }
 
     @Override
-    public BurnActivityType getType() {
-        return type;
+    public BurnActivityType getActivityType() {
+        return activityType;
     }
 
     public int getSteps() {
@@ -151,7 +155,7 @@ public class BurnActivity implements Activity {
                 ", oxygenSaturationLevelPercentage=" + oxygenSaturationLevelPercentage +
                 ", weightInLbs=" + weightInLbs +
                 ", heightInInches=" + heightInInches +
-                ", type=" + type +
+                ", activityType=" + activityType +
                 ", steps=" + steps +
                 ", duration=" + duration +
                 '}';

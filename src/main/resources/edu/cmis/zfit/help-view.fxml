@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="helpPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #2c2c38;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cmis.zfit.HelpController">
+   <children>
+      <Pane prefHeight="450.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="215.0" layoutY="35.0" text="zFit" textFill="#ff7300">
+               <font>
+                  <Font size="96.0" />
+               </font>
+            </Label>
+            <TextArea layoutX="30.0" layoutY="150.0" prefHeight="245.0" prefWidth="540.0" text="zFit is an application to track an individuals overall fitness via metrics collected from disparate devices, applications, and diet ex: Fitbit, Apple Watch, weight scale. It tracks metrics based on food consumption and fitness activities to determine overall health based on calories consumed and burnt." wrapText="true">
+               <font>
+                  <Font size="14.0" />
+               </font></TextArea>
+            <Button layoutX="275.0" layoutY="412.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

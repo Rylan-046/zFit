@@ -21,4 +21,19 @@ public class AccountController {
         AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-view.fxml")));
         accountPane.getChildren().setAll(pane);
     }
+
+    public void onAddBurnActivityClick() throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("add-burn-activity-view.fxml")));
+        accountPane.getChildren().setAll(pane);
+    }
+
+    public void onAddConsumptionActivityClick() throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("add-consumption-activity-view.fxml")));
+        accountPane.getChildren().setAll(pane);
+    }
+
+    public void onMenuAboutClick() throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("help-view.fxml")));
+        accountPane.getChildren().setAll(pane);
+    }
 }

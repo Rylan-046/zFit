@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import edu.cmis.zfit.DateTimePicker?>
+<AnchorPane fx:id="addConsumptionActivityPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #2c2c38;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cmis.zfit.ConsumptionActivityController">
+    <children>
+        <Pane prefHeight="450.0" prefWidth="600.0">
+            <children>
+                <Label layoutX="215.0" layoutY="35.0" text="zFit" textFill="#ff7300">
+                    <font>
+                        <Font size="96.0" />
+                    </font>
+                </Label>
+                <Button layoutX="521.0" layoutY="365.0" mnemonicParsing="false" onAction="#onAddActivityButtonClick" text="Add" />
+                <Label layoutX="481.0" layoutY="283.0" text="Calories" textFill="WHITE" />
+                <Label layoutX="12.0" layoutY="225.0" text="Heart Rate (BPM)" textFill="WHITE" />
+                <Label layoutX="229.0" layoutY="225.0" text="Heart Rate Variability" textFill="WHITE" />
+                <Label layoutX="411.0" layoutY="225.0" text="Oxygen Saturation Level %" textFill="WHITE" />
+                <Label layoutX="259.0" layoutY="283.0" text="Weight (Lbs)" textFill="WHITE" />
+                <Label layoutX="16.0" layoutY="283.0" text="Height (Inches)" textFill="WHITE" />
+                <TextField fx:id="txtCalories" layoutX="450.0" layoutY="308.0" prefHeight="24.0" prefWidth="115.0" />
+                <TextField fx:id="txtHeartRateInBpm" layoutX="242.0" layoutY="243.0" prefHeight="24.0" prefWidth="115.0" />
+                <TextField fx:id="txtHearRateVariability" layoutX="9.0" layoutY="247.0" prefHeight="24.0" prefWidth="115.0" />
+                <TextField fx:id="txtOxygenSaturationLevelPercentage" layoutX="450.0" layoutY="243.0" prefHeight="24.0" prefWidth="115.0" />
+                <TextField fx:id="txtWeightInLbs" layoutX="243.0" layoutY="308.0" prefHeight="24.0" prefWidth="115.0" />
+                <TextField fx:id="txtHeightInInches" layoutX="9.0" layoutY="308.0" prefHeight="24.0" prefWidth="115.0" />
+                <ComboBox fx:id="cmbConsumptionActivity" layoutX="8.0" layoutY="365.0" prefHeight="24.0" prefWidth="115.0">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Eating" />
+                            <String fx:value="Drinking" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <Label layoutX="33.0" layoutY="341.0" text="Activity" textFill="WHITE" />
+                <DateTimePicker fx:id="dateTime" layoutX="11.0" layoutY="185.0" prefHeight="24.0" prefWidth="180.0" />
+                <Label layoutX="24.0" layoutY="163.0" text="Date" textFill="WHITE" />
+                <Label layoutX="151.0" layoutY="128.0" text="Consumption Activity" textFill="#0049ff">
+                    <font>
+                        <Font size="28.0" />
+                    </font></Label>
+                <Button layoutX="450.0" layoutY="365.0" mnemonicParsing="false" onAction="#onCancelButtonClick" text="Cancel" />
+            </children>
+        </Pane>
+    </children>
+</AnchorPane>

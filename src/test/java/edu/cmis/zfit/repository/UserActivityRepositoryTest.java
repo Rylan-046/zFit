@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ActivityRepositoryTest {
-    private ActivityRepository ActivityFileRepository;
+public class UserActivityRepositoryTest {
+    private UserActivityRepository ActivityFileRepository;
     private String userId;
     private final List<Activity> activityList = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class ActivityRepositoryTest {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        ActivityFileRepository = new ActivityFileRepository(getBasePath());
+        ActivityFileRepository = new UserActivityFileRepository(getBasePath());
 
         userId = "billy@gmail.com";
 

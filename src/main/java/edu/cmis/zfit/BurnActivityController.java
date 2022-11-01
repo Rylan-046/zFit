@@ -4,27 +4,27 @@ import edu.cmis.zfit.model.Activity;
 import edu.cmis.zfit.model.BurnActivity;
 import edu.cmis.zfit.model.BurnActivityType;
 import edu.cmis.zfit.model.DateRange;
-import edu.cmis.zfit.repository.ActivityFileRepository;
-import edu.cmis.zfit.repository.ActivityRepository;
+import edu.cmis.zfit.service.ActivityTrackerService;
+import edu.cmis.zfit.service.ServiceException;
+import edu.cmis.zfit.service.ServiceFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public class BurnActivityController {
+    private ActivityTrackerService activityTrackerService;
     private final List<Activity> activityList = new ArrayList<>();
 
     @FXML
-    AnchorPane addBurnActivityPane;
+    private AnchorPane addBurnActivityPane;
 
     @FXML
     private TextField txtCalories;
@@ -56,9 +56,11 @@ public class BurnActivityController {
     @FXML
     private ComboBox cmbBurnActivity;
 
-    public void onAddActivityButtonClick() throws IOException {
-        ActivityRepository activityFileRepository = new ActivityFileRepository(getBasePath());
+    public void initialize() throws ServiceException {
+        activityTrackerService = ServiceFactory.getInstance().getActivityTrackerService();
+    }
 
+    public void onAddActivityButtonClick() throws ServiceException, IOException {
         int calories = Integer.parseInt(txtCalories.getText());
         int heartRateInBpm = Integer.parseInt(txtHeartRateInBpm.getText());
         int hearRateVariability = Integer.parseInt(txtHearRateVariability.getText());
@@ -97,7 +99,7 @@ public class BurnActivityController {
                         dateRange)
         );
 
-        activityFileRepository.save(userId, activityList);
+        activityTrackerService.addUserActivities(userId, activityList);
         changeToAccountPane();
     }
 
@@ -108,15 +110,5 @@ public class BurnActivityController {
     private void changeToAccountPane() throws IOException {
         AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("account-view.fxml")));
         addBurnActivityPane.getChildren().setAll(pane);
-    }
-
-    private Path getBasePath() {
-        String path = "";
-
-        File file = new File(path);
-        String absolutePath = file.getAbsolutePath();
-
-        System.out.println(absolutePath);
-        return Path.of(path);
     }
 }

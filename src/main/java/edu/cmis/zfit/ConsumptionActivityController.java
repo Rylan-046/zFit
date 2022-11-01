@@ -3,17 +3,16 @@ package edu.cmis.zfit;
 import edu.cmis.zfit.model.Activity;
 import edu.cmis.zfit.model.ConsumptionActivity;
 import edu.cmis.zfit.model.ConsumptionActivityType;
-import edu.cmis.zfit.repository.ActivityFileRepository;
-import edu.cmis.zfit.repository.ActivityRepository;
+import edu.cmis.zfit.service.ActivityTrackerService;
+import edu.cmis.zfit.service.ServiceException;
+import edu.cmis.zfit.service.ServiceFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,11 +24,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ConsumptionActivityController {
+    private ActivityTrackerService activityTrackerService;
     private final List<Activity> activityList = new ArrayList<>();
     private final ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(Instant.now());
 
     @FXML
-    AnchorPane addConsumptionActivityPane;
+    private AnchorPane addConsumptionActivityPane;
 
     @FXML
     private TextField txtCalories;
@@ -55,9 +55,11 @@ public class ConsumptionActivityController {
     @FXML
     private ComboBox cmbConsumptionActivity;
 
-    public void onAddActivityButtonClick() throws IOException {
-        ActivityRepository activityFileRepository = new ActivityFileRepository(getBasePath());
+    public void initialize() throws ServiceException {
+        activityTrackerService = ServiceFactory.getInstance().getActivityTrackerService();
+    }
 
+    public void onAddActivityButtonClick() throws ServiceException, IOException {
         int calories = Integer.parseInt(txtCalories.getText());
         int heartRateInBpm = Integer.parseInt(txtHeartRateInBpm.getText());
         int hearRateVariability = Integer.parseInt(txtHearRateVariability.getText());
@@ -99,7 +101,7 @@ public class ConsumptionActivityController {
                 )
         );
 
-        activityFileRepository.save(userId, activityList);
+        activityTrackerService.addUserActivities(userId, activityList);
         changeToAccountPane();
     }
 
@@ -110,15 +112,5 @@ public class ConsumptionActivityController {
     private void changeToAccountPane() throws IOException {
         AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("account-view.fxml")));
         addConsumptionActivityPane.getChildren().setAll(pane);
-    }
-
-    private Path getBasePath() {
-        String path = "";
-
-        File file = new File(path);
-        String absolutePath = file.getAbsolutePath();
-
-        System.out.println(absolutePath);
-        return Path.of(path);
     }
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class HelpController {
     @FXML
-    AnchorPane helpPane;
+    private AnchorPane helpPane;
 
     @FXML
     protected void onBackButtonClick() throws IOException {

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class AccountController {
     @FXML
-    AnchorPane accountPane;
+    private AnchorPane accountPane;
 
     @FXML
     public void initialize() {

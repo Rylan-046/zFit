@@ -14,8 +14,8 @@ public class AbstractFileRepository {
         jsonMapper.findAndRegisterModules();
     }
 
-    protected Path getFilePath(String userId, String fileNameSuffix) {
-        return Paths.get(basePath.toString(), userId + "-" + fileNameSuffix);
+    protected Path getFilePath(String path, String fileNameSuffix) {
+        return Paths.get(basePath.toString(), path + "-" + fileNameSuffix);
     }
 
     protected ObjectMapper getJsonMapper() {

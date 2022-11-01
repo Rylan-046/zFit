@@ -6,7 +6,7 @@ import edu.cmis.zfit.model.ActivityType;
 import java.io.IOException;
 import java.util.List;
 
-public interface ActivityRepository {
+public interface UserActivityRepository {
 
     void save(String userId, List<Activity> activityList) throws IOException;
 

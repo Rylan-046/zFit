@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
-public class UserRepositoryTest {
-    private UserFileRepository userFileRepository;
+public class UserProfileRepositoryTest {
+    private UserProfileFileRepository userFileRepository;
     private UserProfile userProfile;
 
     @BeforeEach
@@ -21,7 +21,7 @@ public class UserRepositoryTest {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        userFileRepository = new UserFileRepository(getBasePath());
+        userFileRepository = new UserProfileFileRepository(getBasePath());
 
         userProfile = new UserProfile(
                 "mandy@gmail.com",
@@ -82,6 +82,9 @@ public class UserRepositoryTest {
                 "File doesn't exist."
         );
     }
+
+    /*@Test
+    public void fetchAll*/
 
     @AfterEach
     public void tearDown() throws IOException {

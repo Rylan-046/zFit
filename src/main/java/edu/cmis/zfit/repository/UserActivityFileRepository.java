@@ -12,10 +12,10 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityFileRepository extends AbstractFileRepository implements ActivityRepository {
+public class UserActivityFileRepository extends AbstractFileRepository implements UserActivityRepository {
     private static final String FILE_SUFFIX = "activities.json";
 
-    public ActivityFileRepository(Path basePath) {
+    public UserActivityFileRepository(Path basePath) {
         super(basePath);
     }
 

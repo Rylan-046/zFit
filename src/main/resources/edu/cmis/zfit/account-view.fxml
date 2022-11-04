@@ -1,45 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<AnchorPane fx:id="accountPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #2c2c38;"
-            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.cmis.zfit.AccountController">
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="accountPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #2c2c38;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cmis.zfit.AccountController">
     <children>
         <Pane prefHeight="450.0" prefWidth="600.0">
             <children>
                 <Label layoutX="215.0" layoutY="35.0" text="zFit" textFill="#ff7300">
                     <font>
-                        <Font size="96.0"/>
+                        <Font size="96.0" />
                     </font>
                 </Label>
-                <Label layoutX="14.0" layoutY="135.0" text="Name" textFill="WHITE"/>
+                <Label layoutX="14.0" layoutY="135.0" text="Name" textFill="WHITE" />
             </children>
         </Pane>
         <MenuBar prefHeight="27.0" prefWidth="600.0" style="-fx-background-color: #292935;">
             <menus>
                 <Menu mnemonicParsing="false" style="-fx-text-fill: white;" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Add Burn Activity" onAction="#onAddBurnActivityClick"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onAddBurnActivityClick" text="Add Burn Activity" />
                     </items>
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Add Consumption Activity" onAction="#onAddConsumptionActivityClick"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onAddConsumptionActivityClick" text="Add Consumption Activity" />
                     </items>
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Sign Out" onAction="#onMenuSignOutClick"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuSignOutClick" text="Sign Out" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                        <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" onAction="#onMenuAboutClick"/>
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuAboutClick" text="About" />
                     </items>
                 </Menu>
             </menus>

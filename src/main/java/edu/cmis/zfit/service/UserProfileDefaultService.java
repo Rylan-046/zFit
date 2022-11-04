@@ -5,7 +5,7 @@ import edu.cmis.zfit.repository.UserProfileRepository;
 import java.io.IOException;
 import java.util.Map;
 
-public class UserProfileDefaultService implements UserProfileService{
+public class UserProfileDefaultService implements UserProfileService {
     private UserProfileRepository userProfileRepository;
     // TODO - Use concurrent map for thread safety
     private Map<String, String> userCredentials;
@@ -14,6 +14,20 @@ public class UserProfileDefaultService implements UserProfileService{
        this.userProfileRepository = userProfileRepository;
        userCredentials = userProfileRepository.fetchUserCredentialsList();
    }
+
+    @Override
+    public boolean isUserIdAvailable(String userId) {
+        boolean userIdAvailable;
+
+        if(!userCredentials.containsKey(userId)) {
+            userIdAvailable = true;
+        } else {
+            userIdAvailable = false;
+            System.out.println("userId: " + userId + " is already taken!");
+        }
+
+        return userIdAvailable;
+    }
 
    @Override
    public void saveCredentials(String userId, String passwd) throws IOException {

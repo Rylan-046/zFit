@@ -54,7 +54,8 @@ public class UserActivityFileRepository extends AbstractFileRepository implement
     public List<Activity> fetch(String userId) throws IOException {
         Path filePath = (super.getFilePath(userId, FILE_SUFFIX));
 
-        return getJsonMapper().readValue(filePath.toFile(), new TypeReference<List<Activity>>(){});
+        return getJsonMapper().readValue(filePath.toFile(), new TypeReference<>() {
+        });
     }
 
     @Override

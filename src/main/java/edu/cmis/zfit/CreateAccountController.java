@@ -5,6 +5,7 @@ import edu.cmis.zfit.service.ServiceFactory;
 import edu.cmis.zfit.service.UserProfileService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -32,8 +33,23 @@ public class CreateAccountController {
     public void initialize() throws ServiceException {
         userProfileService = ServiceFactory.getInstance().getUserProfileService();
 
-        btnCreateAccount.setOnMouseEntered(event -> btnCreateAccount.setStyle("-fx-background-color: -fx-shadow-highlight-color"));
-        btnCreateAccount.setOnMouseExited(event -> btnCreateAccount.setStyle("-fx-background-color: #2289FF"));
+        btnCreateAccount.setOnMouseEntered(event -> {
+            btnCreateAccount.setStyle("-fx-background-color: -fx-shadow-highlight-color");
+            btnCreateAccount.setCursor(Cursor.HAND);
+        });
+
+        btnCreateAccount.setOnMouseExited(event -> {
+            btnCreateAccount.setStyle("-fx-background-color: #2289FF");
+            btnCreateAccount.setCursor(Cursor.DEFAULT);
+        });
+
+        btnCreateAccount.setOnMousePressed(event -> {
+            btnCreateAccount.setStyle("-fx-background-color: #FFFFFF");
+        });
+
+        btnCreateAccount.setOnMouseReleased(event -> {
+            btnCreateAccount.setStyle("-fx-background-color: -fx-shadow-highlight-color");
+        });
     }
 
     @FXML
@@ -43,7 +59,9 @@ public class CreateAccountController {
 
         System.out.println(username + " " + passwd);
 
-        userProfileService.saveCredentials(username, passwd);
+        if(userProfileService.isUserIdAvailable(username)) {
+            userProfileService.saveCredentials(username, passwd);
+        }
 
         AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-view.fxml")));
         createAccountPane.getChildren().setAll(pane);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+
 <AnchorPane fx:id="loginPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #2c2c38;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cmis.zfit.LoginController">
    <children>
       <Pane prefHeight="450.0" prefWidth="600.0">
@@ -20,7 +20,7 @@
                </font>
             </Label>
             <TextField fx:id="txtUsername" layoutX="160.0" layoutY="195.0" prefHeight="35.0" prefWidth="280.0" style="-fx-background-color: #2c2c38; -fx-border-color: #7d8594; -fx-background-insets: 0; -fx-border-radius: 20;" styleClass="text-input" stylesheets="@style.css" />
-            <Label id="lblPassword" layoutX="50.0" layoutY="240.0" text="Password" textFill="WHITE">
+            <Label id="lblPassword" layoutX="53.0" layoutY="247.0" text="Password" textFill="WHITE">
                <font>
                   <Font size="18.0" />
                </font>
@@ -35,6 +35,11 @@
                <font>
                   <Font size="14.0" />
                </font></Hyperlink>
+            <Label layoutX="273.0" layoutY="141.0" text="Sign In" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

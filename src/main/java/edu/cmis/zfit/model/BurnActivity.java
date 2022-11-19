@@ -12,6 +12,7 @@ public record BurnActivity(
          int calories,
          int heartRateInBpm,
          int heartRateVariability,
+         BloodPressure bloodPressure,
          int oxygenSaturationLevelPercentage,
          float weightInLbs,
          int heightInInches,

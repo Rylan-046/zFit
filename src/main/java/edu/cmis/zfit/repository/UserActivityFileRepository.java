@@ -3,6 +3,7 @@ package edu.cmis.zfit.repository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import edu.cmis.zfit.model.Activity;
 import edu.cmis.zfit.model.ActivityType;
+import edu.cmis.zfit.model.DateRange;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -59,12 +60,40 @@ public class UserActivityFileRepository extends AbstractFileRepository implement
     }
 
     @Override
+    public List<Activity> fetch(String userId, DateRange dateRange) throws IOException {
+        List<Activity> activityList = fetch(userId);
+        List<Activity> filteredActivityList = new ArrayList<>();
+
+        for(Activity activity : activityList) {
+            if(dateRange.within(activity.date())) {
+                filteredActivityList.add(activity);
+            }
+        }
+
+        return filteredActivityList;
+    }
+
+    @Override
     public List<Activity> fetch(String userId, ActivityType activityType) throws IOException {
         List<Activity> activityList = fetch(userId);
         List<Activity> filteredActivityList = new ArrayList<>();
 
         for(Activity activity : activityList) {
             if(activity.activityType() == activityType) {
+                filteredActivityList.add(activity);
+            }
+        }
+
+        return filteredActivityList;
+    }
+
+    @Override
+    public List<Activity> fetch(String userId, ActivityType activityType, DateRange dateRange) throws IOException {
+        List<Activity> activityList = fetch(userId);
+        List<Activity> filteredActivityList = new ArrayList<>();
+
+        for(Activity activity : activityList) {
+            if(activity.activityType() == activityType && dateRange.within(activity.date())) {
                 filteredActivityList.add(activity);
             }
         }

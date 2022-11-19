@@ -10,11 +10,14 @@ import java.time.Instant;
         @JsonSubTypes.Type(value = BurnActivity.class, name = "burnActivity"),
         @JsonSubTypes.Type(value = ConsumptionActivity.class, name = "consumptionActivity")
 })
+
+// TODO considering capturing blood pressure
 public interface Activity {
     String id();
     int calories();
     int heartRateInBpm();
     int heartRateVariability();
+    BloodPressure bloodPressure();
     int oxygenSaturationLevelPercentage();
     float weightInLbs();
     int heightInInches();

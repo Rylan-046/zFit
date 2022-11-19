@@ -11,6 +11,7 @@ public record ConsumptionActivity(
      int calories,
      int heartRateInBpm,
      int heartRateVariability,
+     BloodPressure bloodPressure,
      int oxygenSaturationLevelPercentage,
      float weightInLbs,
      int heightInInches,

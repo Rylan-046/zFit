@@ -13,11 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityTrackerServiceImpl implements ActivityTrackerService {
-    private static final String FILE_SUFFIX = "profile.json";
     private UserActivityRepository userActivityRepository;
     private UserProfileRepository userProfileRepository;
-    /*private final UserActivityRepository userActivityRepository = new UserActivityFileRepository(getBasePath());
-    private final UserProfileRepository userProfileRepository = new UserProfileFileRepository(getBasePath());*/
     private final ActivitySorter activitySorter = new ActivityQuickSorter();
 
     public ActivityTrackerServiceImpl(UserActivityRepository userActivityRepository, UserProfileRepository userProfileRepository) {

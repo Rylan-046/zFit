@@ -2,8 +2,8 @@ package edu.cmis.zfit.model;
 
 public record FitnessAnalysis(UserProfile userProfile,
                               HeartRating heartRating,
-                              WeightRating weightRating,
+                              BMIRating bmiRating,
                               ExerciseRating exerciseRating,
-                              float bodyMassIndex,
-                              CaloricRating caloricRating) {
+                              float bodyMassIndex
+                              ) {
 }

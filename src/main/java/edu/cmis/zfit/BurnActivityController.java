@@ -1,9 +1,6 @@
 package edu.cmis.zfit;
 
-import edu.cmis.zfit.model.Activity;
-import edu.cmis.zfit.model.BurnActivity;
-import edu.cmis.zfit.model.BurnActivityType;
-import edu.cmis.zfit.model.DateRange;
+import edu.cmis.zfit.model.*;
 import edu.cmis.zfit.service.ActivityTrackerService;
 import edu.cmis.zfit.service.ServiceException;
 import edu.cmis.zfit.service.ServiceFactory;
@@ -91,6 +88,7 @@ public class BurnActivityController {
                         calories,
                         heartRateInBpm,
                         hearRateVariability,
+                        new BloodPressure(100,100),
                         oxygenSaturationLevelPercentage,
                         weightInLbs,
                         heightInInches,
@@ -100,6 +98,7 @@ public class BurnActivityController {
         );
 
         activityTrackerService.addUserActivities(userId, activityList);
+
         changeToAccountPane();
     }
 

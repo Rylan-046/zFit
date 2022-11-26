@@ -46,12 +46,25 @@ public class ActivityTrackerServiceImpl implements ActivityTrackerService {
 
     @Override
     public void addUserActivities(String userId, List<Activity> activityList) throws ServiceException {
+
+        validateActivities(activityList);
+
         try {
-            userActivityRepository.save(userId, activityList );
+            userActivityRepository.save(userId, activityList);
         } catch (IOException e) {
             String errMsg = "Saving activities for user='" + userId + "' failure!";
             System.out.println(errMsg);
             throw new ServiceException(errMsg, e);
+        }
+    }
+
+    private void validateActivities(List<Activity> activityList) throws IllegalArgumentException {
+        for (Activity activity: activityList) {
+            int minHeight = 58;
+            int maxHeight = 76;
+            if (activity.heightInInches() <= minHeight || activity.heightInInches() >= maxHeight) {
+                throw new IllegalArgumentException("Invalid height: height must be between " + minHeight + " and " + maxHeight);
+            }
         }
     }
 

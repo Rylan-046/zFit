@@ -30,12 +30,17 @@ public record BurnActivity(
     }
 
     @Override
+    public int compareTo(Activity activity) {
+        return this.date().compareTo(activity.date());
+    }
+
+    @Override
     @JsonIgnore
     public Instant date() {
         Instant date = null;
 
         if(duration != null) {
-            date = getDuration().begin();
+            date = getDuration().end();
         }
         return date;
     }

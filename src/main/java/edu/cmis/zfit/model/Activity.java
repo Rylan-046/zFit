@@ -12,7 +12,7 @@ import java.time.Instant;
 })
 
 // TODO considering capturing blood pressure
-public interface Activity {
+public interface Activity extends Comparable<Activity> {
     String id();
     int calories();
     int heartRateInBpm();
@@ -23,4 +23,5 @@ public interface Activity {
     int heightInInches();
     Instant date();
     ActivityType activityType();
+    int compareTo(Activity activity);
 }

@@ -32,4 +32,9 @@ public record ConsumptionActivity(
     public ConsumptionActivityType activityType() {
         return activityType;
     }
+
+    @Override
+    public int compareTo(Activity activity) {
+        return this.date().compareTo(activity.date());
+    }
 }

@@ -20,6 +20,4 @@ public interface UserActivityRepository {
     List<Activity> fetch(String userId, ActivityType activityType) throws IOException;
 
     List<Activity> fetch(String userId, ActivityType activityType, DateRange dateRange) throws IOException;
-
-
 }

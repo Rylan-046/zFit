@@ -1,6 +1,7 @@
 package edu.cmis.zfit;
 
 import edu.cmis.zfit.model.Activity;
+import edu.cmis.zfit.model.BloodPressure;
 import edu.cmis.zfit.model.ConsumptionActivity;
 import edu.cmis.zfit.model.ConsumptionActivityType;
 import edu.cmis.zfit.service.ActivityTrackerService;
@@ -92,6 +93,7 @@ public class ConsumptionActivityController {
                         calories,
                         heartRateInBpm,
                         hearRateVariability,
+                        new BloodPressure(100,100),
                         oxygenSaturationLevelPercentage,
                         weightInLbs,
                         heightInInches,

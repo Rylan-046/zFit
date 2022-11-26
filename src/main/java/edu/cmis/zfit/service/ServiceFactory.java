@@ -14,6 +14,7 @@ public class ServiceFactory {
     private UserProfileRepository userProfileRepository;
     private UserProfileService userProfileService;
     private ActivityTrackerService activityTrackerService;
+    private FitnessAnalysisService fitnessAnalysisService;
 
     public ServiceFactory() throws ServiceException {
         try {
@@ -21,6 +22,7 @@ public class ServiceFactory {
             userProfileRepository = new UserProfileFileRepository(getBasePath());
             userProfileService = new UserProfileDefaultService(userProfileRepository);
             activityTrackerService = new ActivityTrackerServiceImpl(userActivityRepository, userProfileRepository);
+            fitnessAnalysisService = new DefaultFitnessAnalysisService(userActivityRepository, userProfileRepository);
         } catch (IOException ex) {
             throw new ServiceException(ex.getMessage(), ex);
         }
@@ -32,6 +34,10 @@ public class ServiceFactory {
 
     public UserProfileService getUserProfileService() {
         return userProfileService;
+    }
+
+    public FitnessAnalysisService fitnessAnalysisService() {
+        return fitnessAnalysisService;
     }
 
     public ActivityTrackerService getActivityTrackerService() {

@@ -3,6 +3,7 @@ package edu.cmis.zfit.service;
 import edu.cmis.zfit.model.*;
 import edu.cmis.zfit.repository.UserActivityRepository;
 import edu.cmis.zfit.repository.UserProfileRepository;
+import edu.cmis.zfit.util.BinarySearchTree;
 import edu.cmis.zfit.util.HashTable;
 
 import java.io.IOException;
@@ -72,6 +73,12 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
             activityQueue.add(BurnActivityType.RUNNING);
         }
 
+        if(userActivityQueueMap.get(userId) == null) {
+            userActivityQueueMap.put(userId, new PriorityQueue<>());
+        }
+
+        System.out.println("Is activity queue null " + activityQueue == null);
+
         return userActivityQueueMap.get(userId);
     }
 
@@ -93,6 +100,86 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
         return getTargetWeightDelta((int) weightInLbs, healthyWeightTable.get(heightInInches));
     }
 
+    @Override
+    public ConsumptionActivity getConsumptionActivityWithLowestCalories(String userId, DateRange dateRange) throws IOException {
+        List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
+        BinarySearchTree<ComparableActivity> binarySearchTree = new BinarySearchTree();
+
+        for(Activity activity: activityList) {
+            if(activity instanceof ConsumptionActivity) {
+                binarySearchTree.add(new ComparableActivity(activity));
+            }
+        }
+
+        return (ConsumptionActivity) (binarySearchTree.findMinValue()).getActivity();
+    }
+
+    @Override
+    public BurnActivity getBurnActivityWithHighestCalories(String userId, DateRange dateRange) throws IOException {
+        List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
+        BinarySearchTree binarySearchTree = new BinarySearchTree();
+
+        for(Activity activity: activityList) {
+            if(activity instanceof BurnActivity) {
+                binarySearchTree.add(activity);
+            }
+        }
+
+        return (BurnActivity) ((ComparableActivity) binarySearchTree.findMaxValue()).getActivity();
+    }
+
+    @Override
+    public int getAverageConsumptionCalories(String userId, DateRange dateRange) throws IOException {
+        List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
+        int totalCalories = 0;
+        int numActivities = 0;
+
+        System.out.println("Consumption Activity Method Size: " + activityList.size());
+
+        for(Activity activity: activityList) {
+            if(activity instanceof ConsumptionActivity) {
+                System.out.println("Consumption Activity " + activity.calories());
+                totalCalories += activity.calories();
+                numActivities++;
+            } else {
+                System.out.println("NADA CONS" + activity.calories());
+            }
+        }
+
+        return numActivities != 0 ? totalCalories / numActivities : 0;
+    }
+
+    @Override
+    public int getAverageBurnCalories(String userId, DateRange dateRange) throws IOException {
+//        List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
+        List<Activity> activityList = userActivityRepository.fetch(userId);
+        int totalCalories = 0;
+        int numActivities = 0;
+
+        System.out.println("Burn Activity Method Size: " + activityList.size());
+
+        for(Activity activity: activityList) {
+            if(activity instanceof BurnActivity) {
+                System.out.println("Burn Activity " + activity.calories());
+                totalCalories += activity.calories();
+                numActivities++;
+            } else {
+                System.out.println("NADA BURN" + activity.calories());
+            }
+        }
+
+        return numActivities != 0 ? totalCalories / numActivities : 0;
+    }
+
+    // Compute overall status
+    /*public HeartRating calculateHearRateStatus(UserProfile userProfile, float hrv) {
+
+    }*/
+
+    public float calculateBMI(float weightInLbs, int heightInInches) {
+        return (float) (weightInLbs / Math.pow(heightInInches, 2) * 703);
+    }
+
     private int getTargetWeightDelta(int weightInLbs, WeightRange healthyWeightRange) {
         int targetWeight = 0;
 
@@ -105,15 +192,6 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
         System.out.println("targetWeight:" +  +targetWeight + ", weightInLbs: " + weightInLbs);
 
         return weightInLbs - targetWeight;
-    }
-
-    // Compute overall status
-    /*public HeartRating calculateHearRateStatus(UserProfile userProfile, float hrv) {
-
-    }*/
-
-    public float calculateBMI(float weightInLbs, int heightInInches) {
-        return (float) (weightInLbs / Math.pow(heightInInches, 2) * 703);
     }
 
     private HeartRating calculateHrvStatus(UserProfile userProfile, float hrv) {
@@ -176,7 +254,6 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
         }
 
         if (totalCalories > 0) {
-
             Map<BurnActivityType, Integer> caloriesPerActivityMap = new HashMap<>();
             caloriesPerActivityMap.put(activityType, totalCalories / activityList.size());
 
@@ -186,22 +263,25 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
 
     private void populateActivityQueue(String userId) throws IOException {
         List<Activity> activityList = userActivityRepository.fetch(userId);
-        Activity lastActivity = activityList.get(activityList.size() - 1);
 
-        int targetWeightDelta = getTargetWeightDelta(lastActivity.weightInLbs(), lastActivity.heightInInches());
-        System.out.println("targetWeightDelta: " + targetWeightDelta);
-        int targetCaloriesDelta = targetWeightDelta * CALORIES_TO_LB;
+        if(!activityList.isEmpty()) {
+            Activity lastActivity = activityList.get(activityList.size() - 1);
 
-        if (this.userActivityQueueMap.get(userId) == null) {
-            userActivityQueueMap.put(userId, new PriorityQueue<>());
-        }
+            int targetWeightDelta = getTargetWeightDelta(lastActivity.weightInLbs(), lastActivity.heightInInches());
+            System.out.println("targetWeightDelta: " + targetWeightDelta);
+            int targetCaloriesDelta = targetWeightDelta * CALORIES_TO_LB;
 
-        if(targetCaloriesDelta < 0) {
-            // Under Weight //TODO
-        } else if (targetCaloriesDelta > 0) {
-            populateActivityQueueForOverweight(userId, targetCaloriesDelta);
-        } else {
-            // Healthy weight (NOOP)
+            if (this.userActivityQueueMap.get(userId) == null) {
+                userActivityQueueMap.put(userId, new PriorityQueue<>());
+            }
+
+            if (targetCaloriesDelta < 0) {
+                // Under Weight //TODO
+            } else if (targetCaloriesDelta > 0) {
+                populateActivityQueueForOverweight(userId, targetCaloriesDelta);
+            } else {
+                // Healthy weight (NOOP)
+            }
         }
     }
 
@@ -229,7 +309,7 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
 
             // loop through and add the largest calorie burning activity to queue
             for(int index = 0; index < numActivityReps; index++) {
-                System.out.println("add activity: " + largestActivity);
+//                System.out.println("add activity: " + largestActivity);
                 userActivityQueueMap.get(userId).add(largestActivity);
             }
 

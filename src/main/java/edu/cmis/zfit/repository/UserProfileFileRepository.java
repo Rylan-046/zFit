@@ -33,22 +33,6 @@ public class UserProfileFileRepository extends AbstractFileRepository implements
     }
 
     @Override
-    public void delete(String userId) throws IOException {
-        Path filePath = super.getFilePath(userId, PROFILE_FILE_SUFFIX);
-
-        if (filePath.toFile().exists()) {
-            Files.delete(filePath);
-        }
-    }
-
-    @Override
-    public UserProfile fetchById(String userId) throws IOException {
-        Path filePath = (super.getFilePath(userId, PROFILE_FILE_SUFFIX));
-
-        return getJsonMapper().readValue(filePath.toFile(), UserProfile.class);
-    }
-
-    @Override
     public void saveCredentials(String userId, String passwd) throws IOException {
         Path filePath = (super.getFilePath("user", CREDENTIALS_FILE_SUFFIX));
 
@@ -70,6 +54,23 @@ public class UserProfileFileRepository extends AbstractFileRepository implements
         Files.writeString(filePath, json,
                 StandardCharsets.UTF_8, StandardOpenOption.CREATE);
     }
+
+    @Override
+    public void delete(String userId) throws IOException {
+        Path filePath = super.getFilePath(userId, PROFILE_FILE_SUFFIX);
+
+        if (filePath.toFile().exists()) {
+            Files.delete(filePath);
+        }
+    }
+
+    @Override
+    public UserProfile fetchById(String userId) throws IOException {
+        Path filePath = (super.getFilePath(userId, PROFILE_FILE_SUFFIX));
+
+        return getJsonMapper().readValue(filePath.toFile(), UserProfile.class);
+    }
+
 
     @Override
     public Map<String, String> fetchUserCredentialsList() throws IOException {

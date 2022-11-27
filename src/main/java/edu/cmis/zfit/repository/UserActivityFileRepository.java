@@ -5,6 +5,7 @@ import edu.cmis.zfit.model.Activity;
 import edu.cmis.zfit.model.ActivityType;
 import edu.cmis.zfit.model.DateRange;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -53,10 +54,18 @@ public class UserActivityFileRepository extends AbstractFileRepository implement
 
     @Override
     public List<Activity> fetch(String userId) throws IOException {
-        Path filePath = (super.getFilePath(userId, FILE_SUFFIX));
+        List<Activity> activityList = new ArrayList<>();
 
-        return getJsonMapper().readValue(filePath.toFile(), new TypeReference<>() {
-        });
+        try {
+            Path filePath = (super.getFilePath(userId, FILE_SUFFIX));
+
+            activityList = getJsonMapper().readValue(filePath.toFile(), new TypeReference<>() {
+            });
+        } catch (FileNotFoundException ex) {
+            // NOOP (user has no activities yet)
+        }
+
+        return activityList;
     }
 
     @Override

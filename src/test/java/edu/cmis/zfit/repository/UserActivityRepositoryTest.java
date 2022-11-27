@@ -60,8 +60,8 @@ public class UserActivityRepositoryTest {
                         BurnActivityType.RESTING,
                         0,
                         new DateRange(
-                                currentTime.plus(10, ChronoUnit.HOURS),
-                                currentTime.plus(18, ChronoUnit.HOURS)
+                                currentTime.minus(18, ChronoUnit.HOURS),
+                                currentTime.minus(10, ChronoUnit.HOURS)
                         )
                 )
         );
@@ -188,6 +188,18 @@ public class UserActivityRepositoryTest {
     @Test
     public void fetchFilterByTypeTest() throws IOException {
         List<Activity> actualActivityList = ActivityFileRepository.fetch(userId, BurnActivityType.RUNNING);
+        Assertions.assertEquals(1, actualActivityList.size());
+    }
+
+    @Test
+    public void fetchByDateRangeTest() throws IOException {
+        Instant currentTime = Instant.now();
+
+        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId,  new DateRange(
+                currentTime.minus(24, ChronoUnit.HOURS),
+                currentTime.minus(1, ChronoUnit.HOURS)
+        ));
+
         Assertions.assertEquals(1, actualActivityList.size());
     }
 

@@ -26,9 +26,10 @@ public class ActivityQuickSorterTest {
                         250,
                         125,
                         65,
-                        100,
+                        new BloodPressure(78, 125),
                         88,
                         120,
+                        64,
                         BurnActivityType.RUNNING,
                         5200,
                         new DateRange(
@@ -43,9 +44,10 @@ public class ActivityQuickSorterTest {
                         1250,
                         75,
                         65,
-                        95,
+                        new BloodPressure(84, 145),
                         234,
                         72,
+                        58,
                         Instant.now(),
                         ConsumptionActivityType.EATING
                 )
@@ -56,9 +58,10 @@ public class ActivityQuickSorterTest {
                         675,
                         78,
                         64,
-                        99,
+                        new BloodPressure(68, 122),
                         634,
                         66,
+                        67,
                         Instant.now().minus(8, ChronoUnit.HOURS),
                         ConsumptionActivityType.EATING
                 )
@@ -69,9 +72,10 @@ public class ActivityQuickSorterTest {
                         442,
                         72,
                         68,
-                        100,
+                        new BloodPressure(58, 135),
                         160,
                         55,
+                        70,
                         Instant.now().minus(15, ChronoUnit.HOURS),
                         ConsumptionActivityType.DRINKING
                 )
@@ -82,9 +86,10 @@ public class ActivityQuickSorterTest {
                         250,
                         125,
                         65,
-                        100,
+                        new BloodPressure(69, 128),
                         88,
                         120,
+                        65,
                         BurnActivityType.RUNNING,
                         5200,
                         new DateRange(

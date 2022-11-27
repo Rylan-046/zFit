@@ -34,9 +34,10 @@ public class UserActivityRepositoryTest {
                         250,
                         125,
                         65,
-                        100,
+                        new BloodPressure(74, 124),
                         624,
                         38,
+                        72,
                         BurnActivityType.RUNNING,
                         5200,
                         new DateRange(
@@ -52,9 +53,10 @@ public class UserActivityRepositoryTest {
                         5,
                         75,
                         65,
-                        95,
+                        new BloodPressure(55, 134),
                         625,
                         38,
+                         68,
                         BurnActivityType.RESTING,
                         0,
                         new DateRange(
@@ -70,9 +72,10 @@ public class UserActivityRepositoryTest {
                         1250,
                         75,
                         65,
-                        95,
+                        new BloodPressure(58, 110),
                         628,
                         38,
+                        71,
                         Instant.now(),
                         ConsumptionActivityType.EATING
                 )
@@ -94,9 +97,10 @@ public class UserActivityRepositoryTest {
                         225,
                         122,
                         70,
-                        98,
+                        new BloodPressure(66, 111),
                         120,
                         38,
+                        73,
                         BurnActivityType.RUNNING,
                         4800,
                         new DateRange(
@@ -112,9 +116,10 @@ public class UserActivityRepositoryTest {
                         1100,
                         70,
                         70,
-                        100,
+                        new BloodPressure(75, 125),
                         120,
                         65,
+                        58,
                         Instant.now().plus(2, ChronoUnit.HOURS),
                         ConsumptionActivityType.EATING
                 )
@@ -139,9 +144,10 @@ public class UserActivityRepositoryTest {
                         225,
                         122,
                         70,
-                        98,
+                        new BloodPressure(76, 155),
                         120,
                         38,
+                        64,
                         BurnActivityType.RUNNING,
                         4800,
                         new DateRange(

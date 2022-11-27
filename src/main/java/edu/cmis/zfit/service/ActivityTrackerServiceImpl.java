@@ -62,7 +62,7 @@ public class ActivityTrackerServiceImpl implements ActivityTrackerService {
         for (Activity activity: activityList) {
             int minHeight = 58;
             int maxHeight = 76;
-            if (activity.heightInInches() <= minHeight || activity.heightInInches() >= maxHeight) {
+            if (activity.heightInInches() < minHeight || activity.heightInInches() > maxHeight) {
                 throw new IllegalArgumentException("Invalid height: height must be between " + minHeight + " and " + maxHeight);
             }
         }

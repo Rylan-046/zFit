@@ -3,6 +3,7 @@ package edu.cmis.zfit.service;
 import edu.cmis.zfit.model.*;
 import edu.cmis.zfit.repository.UserActivityRepository;
 import edu.cmis.zfit.repository.UserProfileRepository;
+import edu.cmis.zfit.util.HashTable;
 
 import java.io.IOException;
 import java.util.*;
@@ -11,7 +12,7 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
     private static final int CALORIES_TO_LB = 3500;
     private UserActivityRepository userActivityRepository;
     private UserProfileRepository userProfileRepository;
-    private Map<Integer, WeightRange> healthyWeightMap = new HashMap();
+    private HashTable<Integer, WeightRange> healthyWeightTable = new HashTable(32);
     private Map<String, Map<BurnActivityType, Integer>> userCaloriesPerActivityMap = new HashMap<>();
     private Map<String, Queue<ActivityType>> userActivityQueueMap = new HashMap<>();
 
@@ -21,25 +22,25 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
 
         /*Based on this chart:
         https://www.nhlbi.nih.gov/health/educational/healthdisp/pdf/tipsheets/Are-You-at-a-Healthy-Weight.pdf*/
-        healthyWeightMap.put(58, new WeightRange(91, 115));
-        healthyWeightMap.put(59, new WeightRange(94, 119));
-        healthyWeightMap.put(60, new WeightRange(97, 123));
-        healthyWeightMap.put(61, new WeightRange(100, 127));
-        healthyWeightMap.put(62, new WeightRange(104, 131));
-        healthyWeightMap.put(63, new WeightRange(107, 135));
-        healthyWeightMap.put(64, new WeightRange(110, 140));
-        healthyWeightMap.put(65, new WeightRange(114, 144));
-        healthyWeightMap.put(66, new WeightRange(118, 148));
-        healthyWeightMap.put(67, new WeightRange(121, 153));
-        healthyWeightMap.put(68, new WeightRange(125, 158));
-        healthyWeightMap.put(69, new WeightRange(128, 162));
-        healthyWeightMap.put(70, new WeightRange(132, 167));
-        healthyWeightMap.put(71, new WeightRange(136, 172));
-        healthyWeightMap.put(72, new WeightRange(140, 177));
-        healthyWeightMap.put(73, new WeightRange(144, 182));
-        healthyWeightMap.put(74, new WeightRange(148, 186));
-        healthyWeightMap.put(75, new WeightRange(152, 192));
-        healthyWeightMap.put(76, new WeightRange(156, 197));
+        healthyWeightTable.put(58, new WeightRange(91, 115));
+        healthyWeightTable.put(59, new WeightRange(94, 119));
+        healthyWeightTable.put(60, new WeightRange(97, 123));
+        healthyWeightTable.put(61, new WeightRange(100, 127));
+        healthyWeightTable.put(62, new WeightRange(104, 131));
+        healthyWeightTable.put(63, new WeightRange(107, 135));
+        healthyWeightTable.put(64, new WeightRange(110, 140));
+        healthyWeightTable.put(65, new WeightRange(114, 144));
+        healthyWeightTable.put(66, new WeightRange(118, 148));
+        healthyWeightTable.put(67, new WeightRange(121, 153));
+        healthyWeightTable.put(68, new WeightRange(125, 158));
+        healthyWeightTable.put(69, new WeightRange(128, 162));
+        healthyWeightTable.put(70, new WeightRange(132, 167));
+        healthyWeightTable.put(71, new WeightRange(136, 172));
+        healthyWeightTable.put(72, new WeightRange(140, 177));
+        healthyWeightTable.put(73, new WeightRange(144, 182));
+        healthyWeightTable.put(74, new WeightRange(148, 186));
+        healthyWeightTable.put(75, new WeightRange(152, 192));
+        healthyWeightTable.put(76, new WeightRange(156, 197));
     }
 
     @Override
@@ -89,7 +90,7 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
     }
 
     public int getTargetWeightDelta(float weightInLbs, int heightInInches) {
-        return getTargetWeightDelta((int) weightInLbs, healthyWeightMap.get(heightInInches));
+        return getTargetWeightDelta((int) weightInLbs, healthyWeightTable.get(heightInInches));
     }
 
     private int getTargetWeightDelta(int weightInLbs, WeightRange healthyWeightRange) {

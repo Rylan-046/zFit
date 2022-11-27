@@ -7,6 +7,10 @@ public class ComparableActivity implements Comparable<ComparableActivity> {
         this.activity = activity;
     }
 
+    public Activity getActivity() {
+        return activity;
+    }
+
     @Override
     public int compareTo(ComparableActivity comparableActivity) {
         if(this.activity.calories() < comparableActivity.activity.calories()) {

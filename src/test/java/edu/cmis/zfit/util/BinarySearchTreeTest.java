@@ -1,6 +1,7 @@
 package edu.cmis.zfit.util;
 
 import edu.cmis.zfit.model.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,15 +9,15 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
-public class GenericBinarySearchTreeTest {
-    GenBinarySearchTree<ComparableActivity> genBinarySearchTree;
+public class BinarySearchTreeTest {
+    BinarySearchTree<ComparableActivity> binarySearchTree;
     
     @BeforeEach
     public void setup() {
-        genBinarySearchTree = new GenBinarySearchTree<>();
+        binarySearchTree = new BinarySearchTree<>();
         Instant currentTime = Instant.now();
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -35,7 +36,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -54,7 +55,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -73,7 +74,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -92,7 +93,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -111,7 +112,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -130,7 +131,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -149,7 +150,7 @@ public class GenericBinarySearchTreeTest {
                                 )
                         )));
 
-        genBinarySearchTree.add(
+        binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
@@ -171,17 +172,11 @@ public class GenericBinarySearchTreeTest {
 
     @Test
     public void findMinValueTest() {
-        System.out.println("sizeAroony: " + genBinarySearchTree.getSize());
-        System.out.println("Min " + genBinarySearchTree.findMinValue());
-
-//        Assertions.assertEquals(3, genBinarySearchTree.findMinValue());
+        Assertions.assertEquals(112, binarySearchTree.findMinValue().getActivity().calories());
     }
 
     @Test
     public void findMaxValueTest() {
-        System.out.println("sizeAroony: " + genBinarySearchTree.getSize());
-        System.out.println("Max " + genBinarySearchTree.findMaxValue());
-
-//        Assertions.assertEquals(9, genBinarySearchTree.findMaxValue());
+        Assertions.assertEquals(675, binarySearchTree.findMaxValue().getActivity().calories());
     }
 }

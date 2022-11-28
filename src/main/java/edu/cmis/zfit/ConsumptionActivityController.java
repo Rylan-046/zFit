@@ -56,6 +56,7 @@ public class ConsumptionActivityController {
     @FXML
     private ComboBox cmbConsumptionActivity;
 
+    @FXML
     public void initialize() throws ServiceException {
         activityTrackerService = ServiceFactory.getInstance().getActivityTrackerService();
     }

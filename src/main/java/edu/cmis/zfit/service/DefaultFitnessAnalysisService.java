@@ -103,7 +103,7 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
     @Override
     public ConsumptionActivity getConsumptionActivityWithLowestCalories(String userId, DateRange dateRange) throws IOException {
         List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
-        BinarySearchTree<ComparableActivity> binarySearchTree = new BinarySearchTree();
+        BinarySearchTree<ComparableActivity> binarySearchTree = new BinarySearchTree<>();
 
         for(Activity activity: activityList) {
             if(activity instanceof ConsumptionActivity) {
@@ -111,21 +111,21 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
             }
         }
 
-        return (ConsumptionActivity) (binarySearchTree.findMinValue()).getActivity();
+        return !binarySearchTree.isEmpty() ? (ConsumptionActivity) (binarySearchTree.findMinValue()).getActivity() : null;
     }
 
     @Override
     public BurnActivity getBurnActivityWithHighestCalories(String userId, DateRange dateRange) throws IOException {
         List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
-        BinarySearchTree binarySearchTree = new BinarySearchTree();
+        BinarySearchTree<ComparableActivity> binarySearchTree = new BinarySearchTree<>();
 
         for(Activity activity: activityList) {
             if(activity instanceof BurnActivity) {
-                binarySearchTree.add(activity);
+                binarySearchTree.add(new ComparableActivity(activity));
             }
         }
 
-        return (BurnActivity) ((ComparableActivity) binarySearchTree.findMaxValue()).getActivity();
+        return !binarySearchTree.isEmpty() ? (BurnActivity) binarySearchTree.findMaxValue().getActivity() : null;
     }
 
     @Override
@@ -141,8 +141,6 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
                 System.out.println("Consumption Activity " + activity.calories());
                 totalCalories += activity.calories();
                 numActivities++;
-            } else {
-                System.out.println("NADA CONS" + activity.calories());
             }
         }
 
@@ -151,8 +149,7 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
 
     @Override
     public int getAverageBurnCalories(String userId, DateRange dateRange) throws IOException {
-//        List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
-        List<Activity> activityList = userActivityRepository.fetch(userId);
+        List<Activity> activityList = userActivityRepository.fetch(userId, dateRange);
         int totalCalories = 0;
         int numActivities = 0;
 
@@ -163,8 +160,6 @@ public class DefaultFitnessAnalysisService implements FitnessAnalysisService {
                 System.out.println("Burn Activity " + activity.calories());
                 totalCalories += activity.calories();
                 numActivities++;
-            } else {
-                System.out.println("NADA BURN" + activity.calories());
             }
         }
 

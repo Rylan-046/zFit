@@ -81,6 +81,11 @@ public class AccountController {
         accountPane.getChildren().setAll(pane);
     }
 
+    public void onMenuAnalysisClick() throws IOException {
+        AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("analysis-view.fxml")));
+        accountPane.getChildren().setAll(pane);
+    }
+
     public void onMenuAboutClick() throws IOException {
         AnchorPane pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("help-view.fxml")));
         accountPane.getChildren().setAll(pane);

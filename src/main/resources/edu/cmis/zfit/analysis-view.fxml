@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="analysisPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: #2c2c38;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cmis.zfit.AnalysisController">
+   <children>
+      <Pane prefHeight="450.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="215.0" layoutY="35.0" text="zFit" textFill="#ff7300">
+               <font>
+                  <Font size="96.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtHighestBurnActivity" editable="false" layoutX="77.0" layoutY="189.0" prefHeight="24.0" prefWidth="127.0" />
+            <TextField fx:id="txtLowestConsumptionActivity" editable="false" layoutX="77.0" layoutY="295.0" prefHeight="24.0" prefWidth="127.0" />
+            <Label layoutX="33.0" layoutY="166.0" text="Highest Burn Activity" textFill="#fbff00">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="274.0" text="Lowest Consumption Activity" textFill="#fbff00">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="txtBurntCalories" editable="false" layoutX="104.0" layoutY="215.0" prefHeight="24.0" prefWidth="100.0" />
+            <TextField fx:id="txtConsumedCalories" editable="false" layoutX="107.0" layoutY="323.0" prefHeight="24.0" prefWidth="100.0" />
+            <Label layoutX="33.0" layoutY="219.0" text="Calories:" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="325.0" text="Calories:" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="36.0" layoutY="141.0" text="2 Week Interval" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="btnBack" layoutX="14.0" layoutY="402.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="34.0" prefWidth="81.0" text="Back" />
+            <Label layoutX="33.0" layoutY="191.0" text="Type:" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="298.0" text="Type:" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

@@ -53,6 +53,7 @@ public class BurnActivityController {
     @FXML
     private ComboBox cmbBurnActivity;
 
+    @FXML
     public void initialize() throws ServiceException {
         activityTrackerService = ServiceFactory.getInstance().getActivityTrackerService();
     }

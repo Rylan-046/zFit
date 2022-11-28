@@ -17,15 +17,14 @@ import java.util.Objects;
 
 public class LoginController {
     private UserProfileService userProfileService = ServiceFactory.getInstance().getUserProfileService();
+    @FXML
+    private AnchorPane loginPane;
 
     @FXML
     private TextField txtUsername;
 
     @FXML
     private PasswordField txtPassword;
-
-    @FXML
-    private AnchorPane loginPane;
 
     @FXML
     private Button btnLogin;

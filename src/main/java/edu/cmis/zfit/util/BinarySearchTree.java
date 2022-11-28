@@ -24,15 +24,15 @@ public class BinarySearchTree<T extends Comparable> {
     }
 
     public T findMinValue() {
-        return findNodeWithMinValue(rootNode).value;
+        return getSize() > 0 ? findNodeWithMinValue(rootNode).value : null;
     }
 
     public T findMaxValue() {
-       return findNodeWithMaxValue(rootNode).value;
+       return getSize() > 0 ? findNodeWithMaxValue(rootNode).value : null;
     }
 
     private Node<T> findNodeWithMinValue(Node<T> node) {
-        if (node.left != null) {
+        if (node != null && node.left != null) {
             visit(node.value);
             node = findNodeWithMinValue(node.left);
         }
@@ -41,7 +41,7 @@ public class BinarySearchTree<T extends Comparable> {
     }
 
     private Node<T> findNodeWithMaxValue(Node<T> node) {
-        if (node.right != null) {
+        if (node != null && node.right != null) {
             visit(node.value);
             node = findNodeWithMaxValue(node.right);
         }

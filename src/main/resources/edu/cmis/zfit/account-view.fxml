@@ -47,6 +47,9 @@
                         <MenuItem mnemonicParsing="false" onAction="#onAddConsumptionActivityClick" text="Add Consumption Activity" />
                     </items>
                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuAnalysisClick" text="Fitness Analysis" />
+                    </items>
+                    <items>
                         <MenuItem mnemonicParsing="false" onAction="#onMenuSignOutClick" text="Sign Out" />
                     </items>
                 </Menu>

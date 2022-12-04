@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class UserActivityRepositoryTest {
-    private UserActivityRepository ActivityFileRepository;
+    private UserActivityRepository userActivityRepository;
     private String userId;
     private final List<Activity> activityList = new ArrayList<>();
 
@@ -22,7 +22,7 @@ public class UserActivityRepositoryTest {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        ActivityFileRepository = new UserActivityFileRepository(getBasePath());
+        userActivityRepository = new UserActivityFileRepository(getBasePath());
 
         userId = "billy@gmail.com";
 
@@ -81,7 +81,7 @@ public class UserActivityRepositoryTest {
                 )
         );
 
-        ActivityFileRepository.save(userId, activityList);
+        userActivityRepository.save(userId, activityList);
         System.out.println("**** END SETUP ****");
     }
 
@@ -125,9 +125,9 @@ public class UserActivityRepositoryTest {
                 )
         );
 
-        ActivityFileRepository.save(userId, expectedActivityList);
+        userActivityRepository.save(userId, expectedActivityList);
 
-        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId);
+        List<Activity> actualActivityList = userActivityRepository.fetch(userId);
 
         Assertions.assertEquals(expectedActivityList.toString(), actualActivityList.toString());
     }
@@ -161,33 +161,29 @@ public class UserActivityRepositoryTest {
         expectedActivityList.addAll(activityList);
         expectedActivityList.addAll(newActivityList);
 
-        ActivityFileRepository.save(userId, newActivityList);
+        userActivityRepository.save(userId, newActivityList);
 
-        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId);
+        List<Activity> actualActivityList = userActivityRepository.fetch(userId);
 
         Assertions.assertEquals(expectedActivityList.toString(), actualActivityList.toString());
     }
 
     @Test
     public void deleteTest() throws IOException {
-        ActivityFileRepository.delete("mandy@gmail.com");
+        userActivityRepository.delete("mandy@gmail.com");
 
-        Assertions.assertThrows(
-                IOException.class,
-                () -> ActivityFileRepository.fetch("mandy@gmail.com"),
-                "File doesn't exist."
-        );
+        Assertions.assertTrue(userActivityRepository.fetch("mandy@gmail.com").isEmpty());
     }
 
     @Test
     public void fetchTest() throws IOException {
-        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId);
+        List<Activity> actualActivityList = userActivityRepository.fetch(userId);
         Assertions.assertEquals(activityList.toString(), actualActivityList.toString());
     }
 
     @Test
     public void fetchFilterByTypeTest() throws IOException {
-        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId, BurnActivityType.RUNNING);
+        List<Activity> actualActivityList = userActivityRepository.fetch(userId, BurnActivityType.RUNNING);
         Assertions.assertEquals(1, actualActivityList.size());
     }
 
@@ -195,7 +191,7 @@ public class UserActivityRepositoryTest {
     public void fetchByDateRangeTest() throws IOException {
         Instant currentTime = Instant.now();
 
-        List<Activity> actualActivityList = ActivityFileRepository.fetch(userId,  new DateRange(
+        List<Activity> actualActivityList = userActivityRepository.fetch(userId,  new DateRange(
                 currentTime.minus(24, ChronoUnit.HOURS),
                 currentTime.minus(1, ChronoUnit.HOURS)
         ));
@@ -205,9 +201,9 @@ public class UserActivityRepositoryTest {
 
     @AfterEach
     public void tearDown() throws IOException {
-        ActivityFileRepository.delete("billy@gmail.com");
-        ActivityFileRepository.delete("mandy@gmail.com");
-        ActivityFileRepository.delete("lex@gmail.com");
+        userActivityRepository.delete("billy@gmail.com");
+        userActivityRepository.delete("mandy@gmail.com");
+        userActivityRepository.delete("lex@gmail.com");
     }
 
     private Path getBasePath() {

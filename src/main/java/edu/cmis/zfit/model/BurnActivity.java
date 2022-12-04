@@ -9,6 +9,7 @@ import java.time.Instant;
 @JsonTypeName("burnActivity")
 public record BurnActivity(
          String id,
+         String userId,
          int calories,
          int heartRateInBpm,
          int heartRateVariability,

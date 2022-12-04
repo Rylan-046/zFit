@@ -86,6 +86,7 @@ public class BurnActivityController {
         activityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         calories,
                         heartRateInBpm,
                         hearRateVariability,

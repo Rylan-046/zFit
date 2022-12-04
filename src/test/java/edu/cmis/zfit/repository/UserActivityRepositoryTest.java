@@ -16,13 +16,20 @@ public class UserActivityRepositoryTest {
     private UserActivityRepository userActivityRepository;
     private String userId;
     private final List<Activity> activityList = new ArrayList<>();
+    private DBConnectionProperties dbConnectionProperties = new DBConnectionProperties(
+            "jdbc:h2:mem:zFit",
+            null,
+            null);
 
     @BeforeEach
     public void setup() throws IOException {
+        InitDBRepository.getInstance(dbConnectionProperties).init();
+
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        userActivityRepository = new UserActivityFileRepository(getBasePath());
+//        userActivityRepository = new UserActivityFileRepository(getBasePath());
+        userActivityRepository = new UserActivityDatabaseRepository(dbConnectionProperties);
 
         userId = "billy@gmail.com";
 
@@ -31,6 +38,7 @@ public class UserActivityRepositoryTest {
         activityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         250,
                         125,
                         65,
@@ -50,6 +58,7 @@ public class UserActivityRepositoryTest {
         activityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         5,
                         75,
                         65,
@@ -69,6 +78,7 @@ public class UserActivityRepositoryTest {
         activityList.add(
                 new ConsumptionActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         1250,
                         75,
                         65,
@@ -94,6 +104,7 @@ public class UserActivityRepositoryTest {
         expectedActivityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         225,
                         122,
                         70,
@@ -113,6 +124,7 @@ public class UserActivityRepositoryTest {
         expectedActivityList.add(
                 new ConsumptionActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         1100,
                         70,
                         70,
@@ -141,6 +153,7 @@ public class UserActivityRepositoryTest {
         newActivityList.add(
                 new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         225,
                         122,
                         70,
@@ -191,7 +204,7 @@ public class UserActivityRepositoryTest {
     public void fetchByDateRangeTest() throws IOException {
         Instant currentTime = Instant.now();
 
-        List<Activity> actualActivityList = userActivityRepository.fetch(userId,  new DateRange(
+        List<Activity> actualActivityList = userActivityRepository.fetch(userId, new DateRange(
                 currentTime.minus(24, ChronoUnit.HOURS),
                 currentTime.minus(1, ChronoUnit.HOURS)
         ));

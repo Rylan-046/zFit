@@ -14,7 +14,7 @@ public class ServiceFactory {
     private FitnessAnalysisService fitnessAnalysisService;
 
     public static ServiceFactory getInstance() throws ServiceException {
-        return ServiceFactory.getInstance(PersistenceType.FILE);
+        return ServiceFactory.getInstance(PersistenceType.DATABASE);
     }
 
     public static ServiceFactory getInstance(PersistenceType persistenceType) throws ServiceException {

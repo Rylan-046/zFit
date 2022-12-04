@@ -59,7 +59,7 @@ public class UserProfileDatabaseRepository extends AbstractDatabaseRepository im
 
         try (PreparedStatement statement = super.createConnection().prepareStatement(sql)) {
             statement.setString(1, userId);
-            try (ResultSet resultSet = statement.executeQuery("SELECT * FROM tblUserProfile")) {
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     userProfile = new UserProfile(
                             resultSet.getString("id"),
@@ -96,6 +96,9 @@ public class UserProfileDatabaseRepository extends AbstractDatabaseRepository im
             statement.setString(1, userId);
             statement.setString(2, passwd);
 
+            System.out.println("**** " + userId);
+            System.out.println("**** " + passwd);
+
         } catch (SQLException ex) {
             throw new IOException(ex);
         }
@@ -103,12 +106,14 @@ public class UserProfileDatabaseRepository extends AbstractDatabaseRepository im
 
     @Override
     public Map<String, String> fetchUserCredentialsList() throws IOException {
+        System.out.println("HERERE");
         String sql = "SELECT * FROM tblUserCredentials";
         Map<String, String> userCredentialsMap = new HashMap<>();
 
-        try (PreparedStatement statement = super.createConnection().prepareStatement(sql)) {
-            try (ResultSet resultSet = statement.executeQuery("SELECT * FROM tblUserProfile")) {
+        try (Statement statement = super.createConnection().createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
+                    System.out.println("HAS " + resultSet.getString("name") + " " + resultSet.getString("passwd"));
                     userCredentialsMap.put(resultSet.getString("name"), resultSet.getString("passwd"));
                 }
             }

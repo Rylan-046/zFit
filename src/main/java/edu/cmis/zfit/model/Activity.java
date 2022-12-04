@@ -14,6 +14,7 @@ import java.time.Instant;
 // TODO considering capturing blood pressure
 public interface Activity extends Comparable<Activity> {
     String id();
+    String userId();
     int calories();
     int heartRateInBpm();
     int heartRateVariability();

@@ -16,11 +16,13 @@ public class BinarySearchTreeTest {
     public void setup() {
         binarySearchTree = new BinarySearchTree<>();
         Instant currentTime = Instant.now();
+        String userId = "lex@gmail.com";
 
         binarySearchTree.add(
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 225,
                                 122,
                                 70,
@@ -40,6 +42,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 456,
                                 122,
                                 70,
@@ -59,6 +62,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 675,
                                 122,
                                 70,
@@ -78,6 +82,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 112,
                                 122,
                                 70,
@@ -97,6 +102,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 423,
                                 122,
                                 70,
@@ -116,6 +122,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 311,
                                 122,
                                 70,
@@ -135,6 +142,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 368,
                                 122,
                                 70,
@@ -154,6 +162,7 @@ public class BinarySearchTreeTest {
                 new ComparableActivity(
                         new BurnActivity(
                                 UUID.randomUUID().toString(),
+                                userId,
                                 590,
                                 122,
                                 70,

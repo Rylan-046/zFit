@@ -20,9 +20,11 @@ public class ActivityQuickSorterTest {
     public void setup() {
         activityList = new ArrayList<>();
         Instant currentTime = Instant.now();
+        String userId = "lex@gmail.com";
 
         activityList.add(new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         250,
                         125,
                         65,
@@ -41,6 +43,7 @@ public class ActivityQuickSorterTest {
 
         activityList.add(new ConsumptionActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         1250,
                         75,
                         65,
@@ -55,6 +58,7 @@ public class ActivityQuickSorterTest {
 
         activityList.add(new ConsumptionActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         675,
                         78,
                         64,
@@ -69,6 +73,7 @@ public class ActivityQuickSorterTest {
 
         activityList.add(new ConsumptionActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         442,
                         72,
                         68,
@@ -83,6 +88,7 @@ public class ActivityQuickSorterTest {
 
         activityList.add(new BurnActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         250,
                         125,
                         65,

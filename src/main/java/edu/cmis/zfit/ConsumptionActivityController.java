@@ -91,6 +91,7 @@ public class ConsumptionActivityController {
         activityList.add(
                 new ConsumptionActivity(
                         UUID.randomUUID().toString(),
+                        userId,
                         calories,
                         heartRateInBpm,
                         hearRateVariability,

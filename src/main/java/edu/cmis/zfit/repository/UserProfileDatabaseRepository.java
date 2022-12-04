@@ -79,18 +79,18 @@ public class UserProfileDatabaseRepository extends AbstractDatabaseRepository im
 
     @Override
     public void saveCredentials(String userId, String passwd) throws IOException {
-        boolean credentialsExist = fetchUserCredentialsList().get(userId) != null;
+        //boolean credentialsExist = fetchUserCredentialsList().get(userId) != null;
         String sql;
 
-        if (credentialsExist) {
-            sql = "UPDATE tblUserCredentials" +
-                    "SET name = ?, passwd = ?";
-        } else {
-            sql = "INSERT INTO tblUserCredentials" +
+      //  if (credentialsExist) {
+//            sql = "UPDATE tblUserCredentials" +
+//                    "SET name = ?, passwd = ?";
+       // } else {
+            sql = "MERGE INTO tblUserCredentials" +
                     "(name, passwd) " +
                     "VALUES (?, ?) ";
 
-        }
+       // }
 
         try (PreparedStatement statement = super.createConnection().prepareStatement(sql)) {
             statement.setString(1, userId);

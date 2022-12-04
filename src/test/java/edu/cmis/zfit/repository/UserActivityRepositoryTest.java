@@ -1,11 +1,18 @@
 package edu.cmis.zfit.repository;
 
 import edu.cmis.zfit.model.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -16,8 +23,9 @@ public class UserActivityRepositoryTest {
     private UserActivityRepository userActivityRepository;
     private String userId;
     private final List<Activity> activityList = new ArrayList<>();
+
     private DBConnectionProperties dbConnectionProperties = new DBConnectionProperties(
-            "jdbc:h2:mem:zFit",
+            "jdbc:h2:mem:zFit;DB_CLOSE_DELAY=-1",
             null,
             null);
 
@@ -28,7 +36,7 @@ public class UserActivityRepositoryTest {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-//        userActivityRepository = new UserActivityFileRepository(getBasePath());
+        // userActivityRepository = new UserActivityFileRepository(getBasePath());
         userActivityRepository = new UserActivityDatabaseRepository(dbConnectionProperties);
 
         userId = "billy@gmail.com";
@@ -217,6 +225,20 @@ public class UserActivityRepositoryTest {
         userActivityRepository.delete("billy@gmail.com");
         userActivityRepository.delete("mandy@gmail.com");
         userActivityRepository.delete("lex@gmail.com");
+
+        try {
+            Connection connection = DriverManager.getConnection(
+                    dbConnectionProperties.dbUrl()
+            );
+
+            Statement stmt = connection .createStatement();
+            stmt.execute("DROP ALL OBJECTS");
+
+            connection.commit();
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Path getBasePath() {

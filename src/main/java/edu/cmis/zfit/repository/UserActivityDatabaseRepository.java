@@ -17,9 +17,9 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
 
     @Override
     public void save(String userId, List<Activity> activityList) throws IOException {
-        String sql = "INSERT INTO tblActivity" +
-                "(id, userId, calories, heartRateInBpm, heartRateVariability, oxygenSaturationLevelPercentage, weightInLbs, heightInInches) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?) ";
+        String sql = "MERGE INTO tblActivity" +
+                "(id, userId, calories, heartRateInBpm, heartRateVariability, systolic, diastolic, oxygenSaturationLevelPercentage, weightInLbs, heightInInches) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         Connection connection = super.createConnection();
 
@@ -30,20 +30,28 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
                 statement.setInt(3, activity.calories());
                 statement.setInt(4, activity.heartRateInBpm());
                 statement.setInt(5, activity.heartRateVariability());
-                statement.setInt(6, activity.oxygenSaturationLevelPercentage());
-                statement.setFloat(7, activity.weightInLbs());
-                statement.setInt(8, activity.heightInInches());
+                statement.setInt(6, activity.bloodPressure().systolic());
+                statement.setInt(7, activity.bloodPressure().diastolic());
+                statement.setInt(8, activity.oxygenSaturationLevelPercentage());
+                statement.setFloat(9, activity.weightInLbs());
+                statement.setInt(10, activity.heightInInches());
 
                 statement.addBatch();
             }
 
             statement.executeBatch();
 
-            saveBurnActivityTable(connection, activityList);
-            saveConsumptionActivityTable(connection, activityList);
-
         } catch (SQLException ex) {
             throw new IOException(ex);
+        }
+
+        saveBurnActivityTable(connection, activityList);
+        saveConsumptionActivityTable(connection, activityList);
+
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -69,32 +77,26 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
         String sql =
                 "SELECT * " +
                 "FROM tblActivity " +
-                        "LEFT OUTER JOIN tblBurnActivity ON tblActivity.id = tblBurnActivity.id " +
-                        "LEFT OUTER JOIN tblConsumptionActivity ON tblActivity.id = tblConsumptionActivity.id " +
-                        "WHERE userId = ?";
+                "LEFT JOIN tblBurnActivity ON tblActivity.id = tblBurnActivity.id " +
+                "LEFT JOIN tblConsumptionActivity ON tblActivity.id = tblConsumptionActivity.id " +
+                "WHERE userId = ?";
+
 
         return fetch(sql, userId, null);
     }
 
     @Override
     public List<Activity> fetch(String userId, DateRange dateRange) throws IOException {
-//        String sql =
-//                "SELECT * " +
-//                        "FROM tblActivity " +
-//                        "LEFT OUTER JOIN tblBurnActivity ON tblActivity.id = tblBurnActivity.id " +
-//                        "LEFT OUTER JOIN tblConsumptionActivity ON tblActivity.id = tblConsumptionActivity.id " +
-//                        "WHERE userId = ? AND endDate BETWEEN ? AND ?";
-//
-//        return fetch(sql, userId, dateRange);
-
         String sql =
                 "SELECT * " +
                         "FROM tblActivity " +
-                        "LEFT OUTER JOIN tblBurnActivity ON tblActivity.id = tblBurnActivity.id " +
-                        "LEFT OUTER JOIN tblConsumptionActivity ON tblActivity.id = tblConsumptionActivity.id " +
-                        "WHERE userId = ?";
+                        "LEFT JOIN tblBurnActivity ON tblActivity.id = tblBurnActivity.id " +
+                        "LEFT JOIN tblConsumptionActivity ON tblActivity.id = tblConsumptionActivity.id " +
+                        "WHERE userId = ? AND " +
+                        "(tblConsumptionActivity.endDate = null AND tblBurnActivity.endDate >= ? AND tblBurnActivity.endDate < ?" +
+                            "OR tblBurnActivity.endDate = null AND tblBurnActivity.endDate >= ? AND tblBurnActivity.endDate < ?)";
 
-        return fetch(sql, userId, null);
+        return fetch(sql, userId, dateRange);
     }
 
     @Override
@@ -102,10 +104,11 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
         String joinTbl = activityType instanceof BurnActivityType ? "tblBurnActivity" : "tblConsumptionActivity";
         String sql =
                 "SELECT * " +
-                "FROM tblActivity mainTbl " +
-                "INNER JOIN " + joinTbl + " joinTbl " +
-                "ON mainTbl.id = joinTbl.id AND type = ?" +
-                "WHERE userId = ?";
+                "FROM tblActivity " +
+                "INNER JOIN " + joinTbl + " ON tblActivity.id = " + joinTbl + ".id " +
+                "WHERE userId = ? AND " + joinTbl + ".type = ?";
+
+        System.out.println(sql);
 
         return fetch(sql, activityType, userId, null);
     }
@@ -116,8 +119,8 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
         String sql =
                 "SELECT * " +
                 "FROM tblActivity " +
-                "INNER JOIN " + joinTbl + " joinTbl ON tblActivity.id = joinTbl.id " +
-                "WHERE userId = ? AND type = ? AND endDate BETWEEN ? AND ?";
+                "INNER JOIN " + joinTbl + " ON tblActivity.id = " + joinTbl + ".id " +
+                "WHERE userId = ? AND " + joinTbl + ".type = ? AND endDate >= ? AND endDate < ?";
 
         return fetch(sql, activityType, userId, dateRange);
     }
@@ -129,7 +132,6 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             for (Activity activity : activityList) {
-                System.out.println("********* saving burn: " + activity.calories());
                 if (activity.activityType() instanceof BurnActivityType) {
                     BurnActivity burnActivity = (BurnActivity) activity;
                     statement.setString(1, activity.id());
@@ -145,6 +147,8 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
                     statement.addBatch();
                 }
             }
+
+            statement.executeBatch();
 
         } catch (SQLException ex) {
             throw new IOException(ex);
@@ -205,9 +209,8 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
                 statement.setDate(4, Date.valueOf(LocalDate.ofInstant(dateRange.end(), ZoneId.systemDefault())));
             }
             try (ResultSet resultSet = statement.executeQuery()) {
+                System.out.println("------------------ Executing query");
                 while (resultSet.next()) {
-                    System.out.println("burned: type=" + resultSet.getString("tblBurnActivity.type") + ", endDate=" + resultSet.getString("tblBurnActivity.endDate"));
-                    System.out.println("consump: type=" + resultSet.getString("tblConsumptionActivity.type") + ", endDate=" + resultSet.getString("tblConsumptionActivity.endDate"));
                     activityList.add(activityType instanceof BurnActivityType ?
                             toBurnActivity(resultSet):
                             toConsumptionActivity(resultSet));
@@ -223,22 +226,31 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
     private List<Activity> fetch(String sql, String userId, DateRange dateRange) throws IOException {
         List<Activity> activityList = new ArrayList<>();
 
-        try (PreparedStatement statement = super.createConnection().prepareStatement(sql)) {
+        Connection connection = super.createConnection();
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userId);
             if (dateRange != null) {
                 statement.setDate(2, Date.valueOf(LocalDate.ofInstant(dateRange.begin(), ZoneId.systemDefault())));
                 statement.setDate(3, Date.valueOf(LocalDate.ofInstant(dateRange.end(), ZoneId.systemDefault())));
+                statement.setDate(4, Date.valueOf(LocalDate.ofInstant(dateRange.begin(), ZoneId.systemDefault())));
+                statement.setDate(5, Date.valueOf(LocalDate.ofInstant(dateRange.end(), ZoneId.systemDefault())));
             }
             try (ResultSet resultSet = statement.executeQuery()) {
+                System.out.println("------------------ Executing query");
                 while (resultSet.next()) {
+                    System.out.println("calories: " + resultSet.getInt("calories"));
                     if (resultSet.getString("tblBurnActivity.type") != null) {
-                        toBurnActivity(resultSet);
+                        activityList.add(toBurnActivity(resultSet));
                     } else if (resultSet.getString("tblConsumptionActivity.type") != null){
-                        toConsumptionActivity(resultSet);
+                        activityList.add(toConsumptionActivity(resultSet));
                     }
                 }
             }
+
+            connection.close();
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new IOException(ex);
         }
 
@@ -246,6 +258,8 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
     }
 
     private BurnActivity toBurnActivity(ResultSet resultSet) throws SQLException {
+        System.out.println("to burn activity");
+
         return new BurnActivity(
                 resultSet.getString("id"),
                 resultSet.getString("userId"),
@@ -269,6 +283,7 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
     }
 
     private ConsumptionActivity toConsumptionActivity(ResultSet resultSet) throws SQLException {
+        System.out.println("to consumption activity");
 
         return new ConsumptionActivity(
                 resultSet.getString("id"),

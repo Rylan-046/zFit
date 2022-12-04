@@ -24,6 +24,8 @@ public class InitDBRepository extends AbstractDatabaseRepository {
             createActivityTable(connection);
             createBurnActivityTable(connection);
             createConsumptionActivityTable(connection);
+
+            connection.close();
         } catch (SQLException ex) {
             throw new IOException(ex);
         }

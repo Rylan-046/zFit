@@ -27,6 +27,8 @@ public class UserProfileDatabaseRepository extends AbstractDatabaseRepository im
             statement.setString(4, userProfile.firstName());
             statement.setString(5, userProfile.lastName());
 
+            statement.executeUpdate();
+
         } catch (SQLException ex) {
             throw new IOException(ex);
         }
@@ -45,6 +47,8 @@ public class UserProfileDatabaseRepository extends AbstractDatabaseRepository im
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, userId);
+
+            statement.executeUpdate();
 
         } catch (SQLException ex) {
             throw new IOException(ex);

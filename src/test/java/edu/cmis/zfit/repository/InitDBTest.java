@@ -10,7 +10,7 @@ import java.time.Instant;
 
 public class InitDBTest  {
     private DBConnectionProperties dbConnectionProperties = new DBConnectionProperties(
-            "jdbc:h2:mem:zFit",
+            "jdbc:h2:mem:zFit;DB_CLOSE_DELAY=-1",
             null,
             null);
 

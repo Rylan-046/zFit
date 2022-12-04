@@ -2,6 +2,7 @@ package edu.cmis.zfit.repository;
 
 import edu.cmis.zfit.model.UserProfile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -66,9 +67,14 @@ public class UserProfileFileRepository extends AbstractFileRepository implements
 
     @Override
     public UserProfile fetchById(String userId) throws IOException {
+
         Path filePath = (super.getFilePath(userId, PROFILE_FILE_SUFFIX));
 
-        return getJsonMapper().readValue(filePath.toFile(), UserProfile.class);
+        try {
+            return getJsonMapper().readValue(filePath.toFile(), UserProfile.class);
+        } catch (FileNotFoundException e) {
+            return null;
+        }
     }
 
 

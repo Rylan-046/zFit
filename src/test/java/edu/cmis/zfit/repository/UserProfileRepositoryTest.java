@@ -13,15 +13,23 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 
 public class UserProfileRepositoryTest {
-    private UserProfileFileRepository userFileRepository;
+    private UserProfileRepository userProfileRepository;
     private UserProfile userProfile;
+
+    private DBConnectionProperties dbConnectionProperties = new DBConnectionProperties(
+            "jdbc:h2:mem:zFit;DB_CLOSE_DELAY=-1",
+            null,
+            null);
 
     @BeforeEach
     public void setup() throws IOException {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        userFileRepository = new UserProfileFileRepository(getBasePath());
+        InitDBRepository.getInstance(dbConnectionProperties).init();
+
+//        userProfileRepository = new UserProfileFileRepository(getBasePath());
+        userProfileRepository = new UserProfileDatabaseRepository(dbConnectionProperties);
 
         userProfile = new UserProfile(
                 "mandy@gmail.com",
@@ -31,7 +39,7 @@ public class UserProfileRepositoryTest {
                 "Jenkins"
         );
 
-        userFileRepository.save(userProfile);
+        userProfileRepository.save(userProfile);
         System.out.println("**** END SETUP ****");
     }
 
@@ -45,9 +53,9 @@ public class UserProfileRepositoryTest {
                 "Smith"
         );
 
-        userFileRepository.save(userProfileExpected);
+        userProfileRepository.save(userProfileExpected);
 
-        UserProfile userProfileActual = userFileRepository.fetchById(userProfileExpected.id());
+        UserProfile userProfileActual = userProfileRepository.fetchById(userProfileExpected.id());
 
         Assertions.assertEquals(userProfileExpected, userProfileActual);
     }
@@ -65,31 +73,24 @@ public class UserProfileRepositoryTest {
                 "Monroe"
         );
 
-        userFileRepository.save(expectedUserProfile);
+        userProfileRepository.save(expectedUserProfile);
 
-        UserProfile userProfileActual = userFileRepository.fetchById("mandy@gmail.com");
+        UserProfile userProfileActual = userProfileRepository.fetchById("mandy@gmail.com");
 
         Assertions.assertEquals(expectedUserProfile, userProfileActual);
     }
 
     @Test
     public void deleteTest() throws IOException {
-        userFileRepository.delete("mandy@gmail.com");
+        userProfileRepository.delete("mandy@gmail.com");
 
-         Assertions.assertThrows(
-                IOException.class,
-                () -> userFileRepository.fetchById("mandy@gmail.com"),
-                "File doesn't exist."
-        );
+        Assertions.assertNull(userProfileRepository.fetchById("mandy@gmail.com"));
     }
-
-    /*@Test
-    public void fetchAll*/
 
     @AfterEach
     public void tearDown() throws IOException {
-        userFileRepository.delete("lex@gmail.com");
-        userFileRepository.delete("mandy@gmail.com");
+        userProfileRepository.delete("lex@gmail.com");
+        userProfileRepository.delete("mandy@gmail.com");
     }
 
     private Path getBasePath() {

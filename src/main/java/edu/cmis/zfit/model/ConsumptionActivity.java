@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 @JsonTypeName("consumptionActivity")
 public record ConsumptionActivity(
@@ -26,7 +27,7 @@ public record ConsumptionActivity(
 
     @Override
     public Instant date() {
-        return date;
+        return date.truncatedTo(ChronoUnit.MINUTES);
     }
 
     @Override
@@ -37,5 +38,21 @@ public record ConsumptionActivity(
     @Override
     public int compareTo(Activity activity) {
         return this.date().compareTo(activity.date());
+    }
+
+    @Override
+    public String toString() {
+        return "ConsumptionActivity{" +
+                "id='" + id + '\'' +
+                ", userId='" + userId + '\'' +
+                ", calories=" + calories +
+                ", heartRateInBpm=" + heartRateInBpm +
+                ", heartRateVariability=" + heartRateVariability +
+                ", bloodPressure=" + bloodPressure +
+                ", oxygenSaturationLevelPercentage=" + oxygenSaturationLevelPercentage +
+                ", weightInLbs=" + weightInLbs +
+                ", heightInInches=" + heightInInches +
+                ", activityType=" + activityType +
+                '}';
     }
 }

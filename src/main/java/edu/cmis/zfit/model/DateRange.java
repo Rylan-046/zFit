@@ -10,10 +10,14 @@ public record DateRange(Instant begin, Instant end) {
     public boolean within(Instant value) {
         ZoneOffset zoneOffset = ZoneId.systemDefault().getRules().getOffset(Instant.now());
 
-        LocalDateTime ldtBegin = LocalDateTime.ofInstant(begin, zoneOffset);
-        LocalDateTime ldtEnd = LocalDateTime.ofInstant(end, zoneOffset);
-        LocalDateTime ldtValue = LocalDateTime.ofInstant(value, zoneOffset);
+        LocalDateTime ldtBegin = LocalDateTime.ofInstant(begin, ZoneId.systemDefault());
+        LocalDateTime ldtEnd = LocalDateTime.ofInstant(end, ZoneId.systemDefault());
+        LocalDateTime ldtValue = LocalDateTime.ofInstant(value, ZoneId.systemDefault());
 
         return ldtValue.isAfter(ldtBegin) && ldtValue.isBefore(ldtEnd);
+    }
+
+    public String toString() {
+        return "";
     }
 }

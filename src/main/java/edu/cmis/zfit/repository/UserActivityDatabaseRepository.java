@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserActivityDatabaseRepository extends AbstractDatabaseRepository implements UserActivityRepository {
-
     public UserActivityDatabaseRepository(DBConnectionProperties dbConnectionProperties) {
         super(dbConnectionProperties);
     }
@@ -93,8 +92,8 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
                         "LEFT JOIN tblBurnActivity ON tblActivity.id = tblBurnActivity.id " +
                         "LEFT JOIN tblConsumptionActivity ON tblActivity.id = tblConsumptionActivity.id " +
                         "WHERE userId = ? AND " +
-                        "(tblConsumptionActivity.endDate = null AND tblBurnActivity.endDate >= ? AND tblBurnActivity.endDate < ?" +
-                            "OR tblBurnActivity.endDate = null AND tblBurnActivity.endDate >= ? AND tblBurnActivity.endDate < ?)";
+                        "((tblBurnActivity.endDate IS NOT NULL AND tblBurnActivity.endDate >= ? AND tblBurnActivity.endDate <= ?) " +
+                            "OR (tblConsumptionActivity.endDate IS NOT NULL AND tblConsumptionActivity.endDate >= ? AND tblConsumptionActivity.endDate <= ?))";
 
         return fetch(sql, userId, dateRange);
     }
@@ -126,6 +125,8 @@ public class UserActivityDatabaseRepository extends AbstractDatabaseRepository i
     }
 
     public void saveBurnActivityTable(Connection connection, List<Activity> activityList) throws IOException {
+
+//        Instant instantStart = beginDate.toInstant(zoneOffset).truncatedTo(ChronoUnit.MINUTES);
         String sql = "INSERT INTO tblBurnActivity" +
                 "(id, type, steps, beginDate, endDate) " +
                 "VALUES (?, ?, ?, ?, ?) ";

@@ -36,7 +36,7 @@ public class UserActivityRepositoryTest {
         System.out.println("**** BEGIN SETUP ****");
         System.out.println(getBasePath());
 
-        // userActivityRepository = new UserActivityFileRepository(getBasePath());
+//        userActivityRepository = new UserActivityFileRepository(getBasePath());
         userActivityRepository = new UserActivityDatabaseRepository(dbConnectionProperties);
 
         userId = "billy@gmail.com";
@@ -77,8 +77,8 @@ public class UserActivityRepositoryTest {
                         BurnActivityType.RESTING,
                         0,
                         new DateRange(
-                                currentTime.minus(18, ChronoUnit.HOURS),
-                                currentTime.minus(10, ChronoUnit.HOURS)
+                                currentTime.minus(42, ChronoUnit.HOURS),
+                                currentTime.minus(36, ChronoUnit.HOURS)
                         )
                 )
         );
@@ -213,8 +213,8 @@ public class UserActivityRepositoryTest {
         Instant currentTime = Instant.now();
 
         List<Activity> actualActivityList = userActivityRepository.fetch(userId, new DateRange(
-                currentTime.minus(24, ChronoUnit.HOURS),
-                currentTime.minus(1, ChronoUnit.HOURS)
+                currentTime.minus(48, ChronoUnit.HOURS),
+                currentTime.minus(25, ChronoUnit.HOURS)
         ));
 
         Assertions.assertEquals(1, actualActivityList.size());

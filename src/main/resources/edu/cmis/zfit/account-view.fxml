@@ -37,7 +37,7 @@
             </Label>
             </children>
         </Pane>
-        <MenuBar prefHeight="27.0" prefWidth="600.0" style="-fx-background-color: #292935;">
+        <MenuBar prefHeight="27.0" prefWidth="600.0" style="-fx-background-color: #ff7300;">
             <menus>
                 <Menu mnemonicParsing="false" style="-fx-text-fill: white;" text="File">
                     <items>
@@ -51,11 +51,6 @@
                     </items>
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onMenuSignOutClick" text="Sign Out" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
